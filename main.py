@@ -1,11 +1,12 @@
 import pygame as p
 ds=p.display.set_mode((500,300))# create display
 white = (255,255,255)
-d = 1
 x=0
 y=0
 value = 0
 tryhard = 0
+black = (0,0,0)
+color=black
 clock = p.time.Clock()
 # idle and animations for main charecter 
 Di = p.image.load('I/downi.png')
@@ -28,7 +29,6 @@ class Player(object):
   self.rect = self.image.get_rect()
   self.rect.center = (250,150)
 mc = Player()
-black = (0,0,0)
 drawGrid = False
 def drawG():
     blockSize = 50 #Set the size of the grid block
@@ -37,16 +37,18 @@ def drawG():
             rect = p.Rect(x, y, blockSize, blockSize)
             p.draw.rect(ds, black, rect, 1)
 r= True
-rect1 =p.draw.rect(ds,black,p.Rect(x, y, 50, 50))
 # when the game is active
 while r:
   clock.tick(60)
   ds.fill(white)
   ds.blit(mc.image,(mc.x,mc.y))
   P1 = p.transform.scale(g5,(75,100))
-  collide = rect1.colliderect(mc.rect)
-  color = (255, 0, 0) if collide else (black)
-  rect1 =p.draw.rect(ds,color,p.Rect(x, y, 50, 50))
+  rect1 = p.draw.rect(ds, color, p.Rect(x,y,50,50))
+  collideU = rect1.collidepoint(mc.rect.topleft) or rect1.collidepoint(mc.rect.topright) or rect1.collidepoint(mc.rect.midtop)
+  collideD = rect1.collidepoint(mc.rect.midbottom) or rect1.collidepoint(mc.rect.bottomleft) or rect1.collidepoint(mc.rect.bottomright)
+  collideR = rect1.collidepoint(mc.rect.midright) or rect1.collidepoint(mc.rect.topright) or rect1.collidepoint(mc.rect.bottomright)
+  collideL = rect1.collidepoint(mc.rect.midleft) or rect1.collidepoint(mc.rect.topleft) or rect1.collidepoint(mc.rect.bottomleft)
+  color = (255,0,0) if collideU else (black)
   mc.image = P1
   if drawGrid:
      drawG()
@@ -59,40 +61,24 @@ while r:
   if event.type == p.KEYDOWN:
         if event.key == p.K_LEFT:
           g5 = La[value]
-          if not d==2:
-           x+=5
-          if  collide:
-            x-=10
-            d = 2
-        if event.key == p.K_RIGHT:
+          x+=5
+        if event.key == p.K_RIGHT and d<=0:
           g5 = Ra[value]
-          if not d==4:
-           x-=5
-          if  collide:
-            x+=10
-            d = 4
-        if event.key == p.K_UP:
+          x-=5
+        if event.key == p.K_UP and d<=0:
           g5 = Ua[value]
-          if not d == 3:
-           y+=5
-          if  collide:
-            y-=10
-            d = 3
-        if event.key == p.K_DOWN:
-         g5 = Da[value]
-         if not d == 1:
-           y-=5
-         if  collide:
-           y+=10
-           d = 1
+          y+=5
+        if event.key == p.K_DOWN and d<=0:
+          g5 = Da[value]
+          y-=5
   if event.type == p.KEYUP:
-     if event.key == p.K_LEFT:
+     if event.key == p.K_LEFT and d<=0:
        g5 = Li
-     if event.key == p.K_RIGHT:
+     if event.key == p.K_RIGHT and d<=0:
        g5 = Ri
-     if event.key == p.K_UP:
+     if event.key == p.K_UP and d<=0:
        g5 = Ui
-     if event.key == p.K_DOWN:
+     if event.key == p.K_DOWN and d<=0:
        g5 = Di
      if event.key == p.K_EQUALS:
        if drawGrid == False:
@@ -100,16 +86,17 @@ while r:
   if event.type == p.KEYUP:
       if event.key == p.K_MINUS and drawGrid:
        drawGrid= False
-  if collide and d == 3:
-   y-=10
-  elif collide and d == 1:
-    y+=10
-  elif collide and d == 4:
-    x+=10
-  elif collide and d == 2:
-    x-=10
+  if collideL:
+      x-=10
+  if collideR:
+      x+=10
+  if collideU:
+      y-=10
+  if collideD:
+      y+=10
   p.display.flip()# update display
   tryhard += 1
   if tryhard == 10:
     value += 1
     tryhard = 0
+  
