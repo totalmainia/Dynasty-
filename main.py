@@ -1,5 +1,6 @@
 import pygame as p
 
+p.font.init()
 ds = p.display.set_mode((500, 300))  # create display
 white = (255, 255, 255)
 x = 0
@@ -8,8 +9,11 @@ pressed = p.key.get_pressed()
 value = 0
 tryhard = 0
 black = (0, 0, 0)
-P = True
+P = 0
 S = 0
+wi = 87
+T = 1
+L=50
 Eq = ["Armor", "Weapon", "Potion"]
 Inv = [
     "Empty",
@@ -23,6 +27,7 @@ Inv = [
     "Empty",
     "Empty",
 ]
+
 color = black
 clock = p.time.Clock()
 # idle and animations for main charecter
@@ -43,7 +48,7 @@ Ra = [
     p.image.load('I/right3.png')
 ]
 g5 = Di
-P1 = p.transform.scale(g5, (75, 100))
+P1 = p.transform.scale(g5, (wi, 100))
 
 
 # make charecter
@@ -51,7 +56,7 @@ class Player(object):
     def __init__(self):
         super().__init__()
         self.image = (P1)
-        self.x = 212
+        self.x = 209
         self.y = 100
         self.rect = self.image.get_rect()
         self.rect.center = (250, 150)
@@ -69,6 +74,23 @@ def drawG():
             p.draw.rect(ds, black, rect, 1)
 
 
+font = p.font.Font('freesansbold.ttf', 32)
+font2 = p.font.Font('freesansbold.ttf', 20)
+text = font.render('Pause', True, color, white)
+text2 = font2.render('Party (press 1)', True, color, white)
+text3 = font2.render('Settings (press 2)', True, color, white)
+text4 = font2.render('Back (press esc)', True, color, white)
+text5 = font.render('There Are No Settings', True, color, white)
+textRect = text.get_rect()
+textRect2 = text2.get_rect()
+textRect3 = text3.get_rect()
+textRect4 = text4.get_rect()
+textRect5 = text5.get_rect()
+textRect.center = (250, 50)
+textRect2.center = (250, 75)
+textRect3.center = (250, 100)
+textRect4.center = (250, 125)
+textRect5.center = (250, 75)
 r = True
 # when the game is active
 while r:
@@ -79,8 +101,30 @@ while r:
                 if S == 0:
                     S = 1
                     event.key = p.K_p
-                elif S == 1:
+                elif event.key == p.K_e:
                     S = 0
+                    event.key = p.K_p
+            elif event.key == p.K_ESCAPE:
+                if S == 0:
+                    S = 2
+                    event.key = p.K_p
+                    P = 1
+                elif S == 1:
+                    S = 2
+                    event.key = p.K_p
+                    P = 2
+                elif S == 2 and P == 1:
+                    S = 0
+                    event.key = p.K_p
+                elif S == 2 and P == 2:
+                    S = 1
+                    event.key = p.K_p
+                elif S == 3:
+                    S = 2
+                    event.key = p.K_p
+            elif event.key == p.K_2:
+                if S == 2:
+                    S = 3
                     event.key = p.K_p
             if event.key == p.K_EQUALS:
                 if drawGrid == False:
@@ -89,12 +133,12 @@ while r:
                 else:
                     drawGrid = False
     rect1 = p.draw.rect(ds, color, p.Rect(x, y, 500, 50))
-#overworld
+    #overworld
     if S == 0:
         ds.fill(white)
         ds.blit(mc.image, (mc.x, mc.y))
         rect1 = p.draw.rect(ds, color, p.Rect(x, y, 500, 50))
-        P1 = p.transform.scale(g5, (75, 100))
+        P1 = p.transform.scale(g5, (wi, 100))
         mc.image = P1
         if drawGrid:
             drawG()
@@ -117,6 +161,8 @@ while r:
             if event.key == p.K_DOWN:
                 g5 = Da[value]
                 y -= 5
+                T = 4.5
+
         if event.type == p.KEYUP:
             if event.key == p.K_LEFT:
                 g5 = Li
@@ -129,10 +175,28 @@ while r:
 #inventory screen
     elif S == 1:
         ds.fill(color)
-        X = 0
-        while (X < Inv.count()):
-            print(Inv.index(X))
-            X += 1
+        #Create inventory slots
+        InvSlot1 = p.draw.rect(ds,white,p.Rect(25, 25, L,L))
+        InvSlot2 = p.draw.rect(ds,white,p.Rect(75, 25,L,L))
+        InvSlot3 = p.draw.rect(ds,white,p.Rect(150, 25,L,L))
+        InvSlot4 = p.draw.rect(ds,white,p.Rect(200, 25,L,L))
+        InvSlot5 = p.draw.rect(ds,white,p.Rect(250, 25,L,L))
+        InvSlot6 = p.draw.rect(ds,white,p.Rect(50, 75,L,L))
+        InvSlot7 = p.draw.rect(ds,white,p.Rect(100, 75,L,L))
+        InvSlot8 = p.draw.rect(ds,white,p.Rect(150, 75,L,L))
+        InvSlot9 = p.draw.rect(ds,white,p.Rect(200, 75,L,L))
+        InvSlot10 = p.draw.rect(ds,white,p.Rect(250, 75,L,L))
+#menu screen
+    elif S == 2:
+        ds.fill(white)
+        ds.blit(text, textRect)
+        ds.blit(text2, textRect2)
+        ds.blit(text3, textRect3)
+        ds.blit(text4, textRect4)
+    elif S == 3:
+        ds.fill(white)
+        ds.blit(text5, textRect5)
+        ds.blit(text4, textRect4)
 
     collideU = rect1.collidepoint(mc.rect.topleft) or rect1.collidepoint(
         mc.rect.topright) or rect1.collidepoint(mc.rect.midtop)
