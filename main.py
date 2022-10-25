@@ -228,14 +228,14 @@ while Startscreen:
     if mouseover(textRectscreen1):
       Startscreen = False
       begin = True
-  if event.type == p.KEYDOWN:
-    if event.key == p.K_BACKSPACE:
-      user_text = user_text[:-1]
-    else:
-      user_text += event.unicode
+    if event.type == p.KEYDOWN:
+      if event.key == p.K_BACKSPACE:
+        user_text = user_text[:-1]
+      else:
+        user_text += event.unicode
   testext= font.render(user_text, True, black)
   testRect = testext.get_rect()
-  testRect.center = (200,200)
+  testRect.center = (250,250)
   ds.blit(testext,testRect)
   p.display.flip()
 while begin:
