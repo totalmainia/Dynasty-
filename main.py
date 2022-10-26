@@ -9,6 +9,7 @@ import sta
 import im
 import In
 import Xp
+password=''
 clock = p. time. Clock()
 Trash = p.image.load('trash-2.svg')
 Trash_rect1= Trash.get_rect()
@@ -218,6 +219,17 @@ textscreen3 = font.render('Quit', True, black,white)
 textRectscreen3 = textscreen3.get_rect()
 textRectscreen3.center = (250,200)
 user_text = ''
+texts = font.render('password?',True,black,white)
+texts2 = font.render('yes/', True, black, white)
+texts3 = font.render('No', True, black, white)
+textsRect = p.Rect(150,50,200,150)
+texts2Rect = texts2.get_rect()
+texts2Rect.center = (200,200)
+texts3Rect = texts3.get_rect()
+texts3Rect.center = (260,200)
+def passwordcheck():
+  if savedata == :
+    return True
 while Startscreen:
   ds.fill(white)
   ds.blit(textscreen,textRectscreen)
@@ -238,6 +250,7 @@ while Startscreen:
   testRect.center = (250,250)
   ds.blit(testext,testRect)
   p.display.flip()
+ahhhahhh=0
 while begin:
   ds.fill(white)
   clock.tick(60)
@@ -249,62 +262,73 @@ while begin:
   ds.blit(Trash, Trash_rect3)
   ds.blit(textsave4,textRectsave4)
   ds.blit(Trash, Trash_rect4)
-  for event in p.event.get():
-    if mouseover(textRectsave1):
-      savefile=1
-      begin = False
-      r = True
-      with open('SaveFiles/Savefile1.txt') as saved:
-        savedata =json.load(saved)
-    if mouseover(textRectsave2):
-      savefile=2
-      begin = False
-      r = True
-      with open('SaveFiles/Savefile2.txt') as saved:
-        savedata =json.load(saved)
-    if mouseover(textRectsave3):
-      savefile=3
-      begin = False
-      r = True
-      with open('SaveFiles/Savefile3.txt') as saved:
-        savedata =json.load(saved)
-    if mouseover(textRectsave4):
-      savefile=4
-      begin = False
-      r = True
-      with open('SaveFiles/Savefile4.txt') as saved:
-        savedata =json.load(saved)
-    if mouseover(Trash_rect1) and once == 0:
-        with open('SaveFiles/Start_save.txt') as saved:
+  if ahhhahhh==0:
+    for event in p.event.get():
+      if mouseover(textRectsave1):
+        with open('SaveFiles/Savefile1.txt') as saved:
           savedata =json.load(saved)
-        with open('SaveFiles/Savefile1.txt','w') as saved:
-          json.dump(savedata,saved)
-        print('save1 Deleted')
-        once = 1
-          
-    elif mouseover(Trash_rect2) and once == 0:
-        with open('SaveFiles/Start_save.txt') as saved:
+        savefile=1
+        if not passwordcheck():
+          begin = False
+          r = True
+        if passwordcheck():
+          ahhhahhh=1
+      if mouseover(textRectsave2):
+        savefile=2
+        begin = False
+        r = True
+        with open('SaveFiles/Savefile2.txt') as saved:
           savedata =json.load(saved)
-        with open('SaveFiles/Savefile2.txt','w') as saved:
-          json.dump(savedata,saved)
-        print('save2 Deleted')
-        once = 1
-    elif mouseover(Trash_rect3) and once == 0:
-        with open('SaveFiles/Start_save.txt') as saved:
+      if mouseover(textRectsave3):
+        savefile=3
+        begin = False
+        r = True
+        with open('SaveFiles/Savefile3.txt') as saved:
           savedata =json.load(saved)
-        with open('SaveFiles/Savefile3.txt','w') as saved:
-          json.dump(savedata,saved)
-        print('save3 Deleted')
-        once = 1
-    elif mouseover(Trash_rect4) and once == 0:
-        with open('SaveFiles/Start_save.txt') as saved:
+      if mouseover(textRectsave4):
+        savefile=4
+        begin = False
+        r = True
+        with open('SaveFiles/Savefile4.txt') as saved:
           savedata =json.load(saved)
-        with open('SaveFiles/Savefile4.txt','w') as saved:
-          json.dump(savedata,saved)
-        print('save4 Deleted')
-        once = 1
-    elif not mouseover(Trash_rect1 or Trash_rect2 or Trash_rect3 or Trash_rect4):
-      once = 0
+      if mouseover(Trash_rect1) and once == 0:
+          with open('SaveFiles/Start_save.txt') as saved:
+            savedata =json.load(saved)
+          with open('SaveFiles/Savefile1.txt','w') as saved:
+            json.dump(savedata,saved)
+          print('save1 Deleted')
+          once = 1
+            
+      elif mouseover(Trash_rect2) and once == 0:
+          with open('SaveFiles/Start_save.txt') as saved:
+            savedata =json.load(saved)
+          with open('SaveFiles/Savefile2.txt','w') as saved:
+            json.dump(savedata,saved)
+          print('save2 Deleted')
+          once = 1
+      elif mouseover(Trash_rect3) and once == 0:
+          with open('SaveFiles/Start_save.txt') as saved:
+            savedata =json.load(saved)
+          with open('SaveFiles/Savefile3.txt','w') as saved:
+            json.dump(savedata,saved)
+          print('save3 Deleted')
+          once = 1
+      elif mouseover(Trash_rect4) and once == 0:
+          with open('SaveFiles/Start_save.txt') as saved:
+            savedata =json.load(saved)
+          with open('SaveFiles/Savefile4.txt','w') as saved:
+            json.dump(savedata,saved)
+          print('save4 Deleted')
+          once = 1
+      elif not mouseover(Trash_rect1 or Trash_rect2 or Trash_rect3 or Trash_rect4):
+        once = 0
+  elif ahhhahhh==1:
+    #150,50,200,150
+    p.draw.rect(ds,(0,0,0),p.Rect(0,0,1000,1000))
+    p.draw.rect(ds,white,p.Rect(150,50,200,200))
+    ds.blit(texts,textsRect)
+    ds.blit(texts2,texts2Rect)
+    ds.blit(texts3,texts3Rect)
   p.display.flip()
   
 yesxy=0
