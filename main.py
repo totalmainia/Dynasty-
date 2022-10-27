@@ -219,6 +219,8 @@ textscreen3 = font.render('Quit', True, black,white)
 textRectscreen3 = textscreen3.get_rect()
 textRectscreen3.center = (250,200)
 user_text = ''
+Passwordtext = ''
+Password = font.render(Passwordtext,True,black)
 texts = font.render('password?',True,black,white)
 texts2 = font.render('yes/', True, black, white)
 texts3 = font.render('No', True, black, white)
@@ -227,9 +229,7 @@ texts2Rect = texts2.get_rect()
 texts2Rect.center = (200,200)
 texts3Rect = texts3.get_rect()
 texts3Rect.center = (260,200)
-def passwordcheck():
-  if savedata == :
-    return True
+texts4Rect = p.Rect(150,100,200,150)
 while Startscreen:
   ds.fill(white)
   ds.blit(textscreen,textRectscreen)
@@ -251,6 +251,7 @@ while Startscreen:
   ds.blit(testext,testRect)
   p.display.flip()
 ahhhahhh=0
+yn=0
 while begin:
   ds.fill(white)
   clock.tick(60)
@@ -268,69 +269,160 @@ while begin:
         with open('SaveFiles/Savefile1.txt') as saved:
           savedata =json.load(saved)
         savefile=1
-        if not passwordcheck():
+        checkpass = os.environ['password1']
+        pass1= checkpass
+        if pass1=='None':
           begin = False
           r = True
-        if passwordcheck():
+        else:
           ahhhahhh=1
       if mouseover(textRectsave2):
-        savefile=2
-        begin = False
-        r = True
         with open('SaveFiles/Savefile2.txt') as saved:
           savedata =json.load(saved)
+        savefile=2
+        checkpass = os.environ['password2']
+        pass1= checkpass
+        if pass1=='None':
+          begin = False
+          r = True
+        else:
+          ahhhahhh=1
       if mouseover(textRectsave3):
-        savefile=3
-        begin = False
-        r = True
         with open('SaveFiles/Savefile3.txt') as saved:
           savedata =json.load(saved)
+        savefile=3
+        checkpass = os.environ['password3']
+        pass1= checkpass
+        if pass1=='None':
+          begin = False
+          r = True
+        else:
+          ahhhahhh=1
       if mouseover(textRectsave4):
-        savefile=4
-        begin = False
-        r = True
-        with open('SaveFiles/Savefile4.txt') as saved:
+        with open('SaveFiles/Savefile1.txt') as saved:
           savedata =json.load(saved)
+        savefile=4
+        checkpass = os.environ['password4']
+        pass1= checkpass
+        if pass1=='None':
+          begin = False
+          r = True
+        else:
+          ahhhahhh=1
       if mouseover(Trash_rect1) and once == 0:
+        savefile=1
+        checkpass = os.environ['password1']
+        if checkpass == 'None' or '':
           with open('SaveFiles/Start_save.txt') as saved:
             savedata =json.load(saved)
           with open('SaveFiles/Savefile1.txt','w') as saved:
             json.dump(savedata,saved)
+          os.environ['password1'] = 'nothing'
           print('save1 Deleted')
           once = 1
-            
+        elif not checkpass== 'None' or 'nothing': 
+            ahhhahhh=2
       elif mouseover(Trash_rect2) and once == 0:
+        savefile=2
+        checkpass = os.environ['password2']
+        if checkpass == 'None' or '':
           with open('SaveFiles/Start_save.txt') as saved:
             savedata =json.load(saved)
           with open('SaveFiles/Savefile2.txt','w') as saved:
             json.dump(savedata,saved)
+          os.environ['password2'] = 'nothing'
           print('save2 Deleted')
           once = 1
+        elif not checkpass== 'None' or 'nothing': 
+            ahhhahhh=2
       elif mouseover(Trash_rect3) and once == 0:
+        savefile=3
+        checkpass = os.environ['password3']
+        if checkpass == 'None' or '':
           with open('SaveFiles/Start_save.txt') as saved:
             savedata =json.load(saved)
           with open('SaveFiles/Savefile3.txt','w') as saved:
             json.dump(savedata,saved)
+          os.environ['password3'] = 'nothing'
           print('save3 Deleted')
           once = 1
-      elif mouseover(Trash_rect4) and once == 0:
+        elif not checkpass== 'None' or 'nothing': 
+            ahhhahhh=2
+      elif mouseover(Trash_rect2) and once == 0:
+        savefile=4
+        checkpass = os.environ['password4']
+        if checkpass == 'None' or '':
           with open('SaveFiles/Start_save.txt') as saved:
             savedata =json.load(saved)
           with open('SaveFiles/Savefile4.txt','w') as saved:
             json.dump(savedata,saved)
+          os.environ['password4'] = 'nothing'
           print('save4 Deleted')
           once = 1
+        elif not checkpass== 'None' or 'nothing': 
+            ahhhahhh=2
       elif not mouseover(Trash_rect1 or Trash_rect2 or Trash_rect3 or Trash_rect4):
         once = 0
-  elif ahhhahhh==1:
+  if ahhhahhh==1:
     #150,50,200,150
     p.draw.rect(ds,(0,0,0),p.Rect(0,0,1000,1000))
     p.draw.rect(ds,white,p.Rect(150,50,200,200))
     ds.blit(texts,textsRect)
-    ds.blit(texts2,texts2Rect)
-    ds.blit(texts3,texts3Rect)
+    if pass1 == 'nothing' and yn == 0:
+      ds.blit(texts2,texts2Rect)
+      ds.blit(texts3,texts3Rect)
+      if mouseover(texts3Rect):
+        os.environ[('password'+str(savefile))]= 'None'
+      elif mouseover(texts2Rect):
+        yn = 1
+    print(yn)
+    if yn == 1:
+      for event in p.event.get():
+        if event.type == p.KEYDOWN:
+          if event.key == p.K_BACKSPACE:
+            Passwordtext = Passwordtext[:-1]
+          elif event.key == p.K_ENTER:
+            os.environ[('password'+str(savefile))]=Passwordtext
+            Passwordtext = ''
+            ahhhahhh=0
+          else:
+            Passwordtext += event.unicode
+      Password = font.render(Passwordtext,True,black)
+      ds.blit(Password,texts4Rect)
+    elif not pass1 =='nothing':
+      for event in p.event.get():
+        if event.type == p.KEYDOWN:
+          if event.key == p.K_BACKSPACE:
+            Passwordtext = Passwordtext[:-1]
+          else:
+            Passwordtext += event.unicode
+      Password = font.render(Passwordtext,True,black)
+      ds.blit(Password,texts4Rect)
+    if Passwordtext == pass1:
+      begin = False
+      r = True
+  elif ahhhahhh == 2:
+    p.draw.rect(ds,(0,0,0),p.Rect(0,0,1000,1000))
+    p.draw.rect(ds,white,p.Rect(150,50,200,200))
+    ds.blit(texts,textsRect)
+    pass1 = os.environ[('password'+str(savefile))]
+    for event in p.event.get():
+        if event.type == p.KEYDOWN:
+          if event.key == p.K_BACKSPACE:
+            Passwordtext = Passwordtext[:-1]
+          else:
+            Passwordtext += event.unicode
+    Password = font.render(Passwordtext,True,black)
+    ds.blit(Password,texts4Rect)
+    if Passwordtext == pass1:
+      with open('SaveFiles/Start_save.txt') as saved:
+            savedata =json.load(saved)
+      with open('SaveFiles/Savefile'+str(savefile)+'.txt','w') as saved:
+            json.dump(savedata,saved)
+      print('save' + str(savefile)+ ' Deleted')
+      ahhhahhh=0
   p.display.flip()
-  
+
 yesxy=0
 while r:
   #[x,y,image,level,gxp,xpn,stats,inv,enemies]
