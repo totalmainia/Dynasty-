@@ -1,16 +1,28 @@
-#net dmg = attack dmg - def × factor , where factor is 0.5 in Classic Mode, 0.75 in Expert Mode, and 1 in Master Mode.
+    #net dmg = attack dmg - def × 0.5
 #a,b = b,a
 #array[0][1],array[1][1] = arrray[1][1],array[0][1]
 import pygame as p
-import os 
-import random
-import json
-import sta
-import im
-import In
-import Xp
+import os, random, json, sta, im, In, Xp, battle, text, s
+#import random
+#import json
+#import sta
+#import im
+#import In
+#import Xp
+#import battle
+#import text
+#import s
+texttracker = 0
+textamount = 0
+direction = 1
+textbox = False
+collideU= False
+collideR = False
+collideL = False
+collideD = False
+room = 0
 password=''
-clock = p. time. Clock()
+clock = p. time.Clock()
 Trash = p.image.load('trash-2.svg')
 Trash_rect1= Trash.get_rect()
 Trash_rect1.center = (400,50)
@@ -20,26 +32,16 @@ Trash_rect3= Trash.get_rect()
 Trash_rect3.center = (400,190)
 Trash_rect4= Trash.get_rect()
 Trash_rect4.center = (400,260)
-white = (255, 255, 255)
-green = (0,255,0)
-red = (255,0,0)
-grey = (10,10,10)
-black = (0,0,0)
-color2 = (255,255.255)
+white = (255, 255, 255,128)
+green = (0,255,0,128)
+red = (255,0,0,128)
+grey = (10,10,10,128)
+black = (0,0,0,128)
+color2 = (255,255.255,128)
 color = black
 savefile=0
 ahhhhhhhh = []
-yes = 0
-pbw = 200
-pbh = 225
-pbx = 80
-pby = 80
-ebw = 50
-ebh = 50
-ebx = 350
-eby = 50
-p.font.init()
-ds = p.display.set_mode((500, 300))  # create display
+p.font.init() #create display
 x = 0
 y = 0
 trrr=0
@@ -52,7 +54,6 @@ pressed = p.key.get_pressed()
 value = 0
 tryhard = 0
 P = 0
-S = 0
 T = 1
 #THE THING GO TING THE THIGN THERE YES YUP 
 L=50
@@ -78,53 +79,13 @@ def drawG():
             rect = p.Rect(x, y, blockSize, blockSize)
             p.draw.rect(ds, black, rect, 1)
 ahhh = sta.mc.Hp
-font999 = p.font.Font('freesansbold.ttf', 50)
-text999 = font999.render('YOU DIED', True, red, black)
-textRect999 = text999.get_rect()
-textRect999.center = (250,150)
-fonthp = p.font.Font('freesansbold.ttf', 10)
-textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-textRectHp = textHp.get_rect()
-textRectHp.center = (50,220)
-
-font = p.font.Font('freesansbold.ttf', 32)
-font2 = p.font.Font('freesansbold.ttf', 20)
-font3 = p.font.Font('freesansbold.ttf', 18)
-text = font.render('Pause', True, color, white)
-text2 = font2.render('Party', True, color, white)
-text3 = font2.render('Settings', True, color, white)
-text4 = font2.render('Back', True, color, white)
-text5 = font.render('There Are No Settings', True, color, white)
-text6 = font2.render('Inventory full', True, color, white)
-text7 = font3.render('Attack',True, white,grey)
-text8 = font3.render('Defend',True, white,grey)
-text9 = font3.render('Magic',True, white,grey)
-text10 = font3.render('Potion',True, white,grey)
-textRect = text.get_rect()
-textRect2 = text2.get_rect()
-textRect3 = text3.get_rect()
-textRect4 = text4.get_rect()
-textRect5 = text5.get_rect()
-textRect7 = text7.get_rect()
-textRect8 = text8.get_rect()
-textRect9 = text9.get_rect()
-textRect10 = text10.get_rect()
-textRect.center = (250, 50)
-textRect2.center = (250, 75)
-textRect3.center = (250, 100)
-textRect4.center = (250, 125)
-textRect5.center = (250, 75)
-textRect7.center = (360, 250)
-textRect8.center = (440, 250)
-textRect9.center = (360, 290)
-textRect10.center = (440, 290)
 mx,my=p.mouse.get_pos()
 def item(num,id,X,Y,width,height):
   global x,y
   global var
   picture = p.transform.scale(id,(width,height))
   if var[num][0]==0:
-    name=ds.blit(picture, (x+X, y+Y))
+    name=s.ds.blit(picture, (x+X, y+Y))
     if In.colI(name):
       if In.additem(id):
         var[num][0]=1
@@ -134,20 +95,31 @@ def ENEMY(num,image,X,Y,width,height):
   if len(ahhhhhhhh)<=num:
     ahhhhhhhh.append(1)
   if ahhhhhhhh[num]==1:
-    name=ds.blit(picture, (x+X, y+Y))
+    name=s.ds.blit(picture, (x+X, y+Y))
     if In.colI(name):
       hmmm = image
-      S=21
+      sta.S=21
       ahhhhhhhh[num]=0
 def collide(obje):
   if (obje).collidepoint(sta.mc.rect.topleft) or (obje).collidepoint(sta.mc.rect.topright) or (obje).collidepoint(sta.mc.rect.midtop):
           return True
-  if (obje).collidepoint(sta.mc.rect.midbottom) or (obje).collidepoint(sta.mc.rect.bottomleft) or rect1.collidepoint(sta.mc.rect.bottomright):
+  if (obje).collidepoint(sta.mc.rect.midbottom) or (obje).collidepoint(sta.mc.rect.bottomleft) or (obje).collidepoint(sta.mc.rect.bottomright):
           return True
   if (obje).collidepoint(sta.mc.rect.midright) or (obje).collidepoint(sta.mc.rect.topright) or (obje).collidepoint(sta.mc.rect.bottomright):
           return True
   if (obje).collidepoint(sta.mc.rect.midleft) or (obje).collidepoint(sta.mc.rect.topleft) or (obje).collidepoint(sta.mc.rect.bottomleft):
           return True
+#walls
+def collidewall(walls):
+  global collideU,collideD,collideL,collideR,wallist
+  if (walls).collidepoint(sta.mc.rect.topleft) or (walls).collidepoint(sta.mc.rect.topright) or (walls).collidepoint(sta.mc.rect.midtop):
+      collideU= True
+  if (walls).collidepoint(sta.mc.rect.midbottom) or (walls).collidepoint(sta.mc.rect.bottomleft) or (walls).collidepoint(sta.mc.rect.bottomright):
+      collideD = True
+  if (walls).collidepoint(sta.mc.rect.midright) or (walls).collidepoint(sta.mc.rect.topright) or (walls).collidepoint(sta.mc.rect.bottomright):
+      collideR = True
+  if (walls).collidepoint(sta.mc.rect.midleft) or (walls).collidepoint(sta.mc.rect.topleft) or (walls).collidepoint(sta.mc.rect.bottomleft):
+      collideL= True
 def mouseover(rect):
   global my,mx
   mx,my=p.mouse.get_pos()
@@ -155,40 +127,16 @@ def mouseover(rect):
   if rect.collidepoint(mx,my):
     if test:
       return True
-      print('rect')
-
 os.system('clear')
-s=sta.Enemy()
-at=0
-de=0
+en=sta.Enemy()
 #DAMAGE
 #CALCULATION
 #AND
 #GAME
-def damage(wih,wht):
-  dam = wht.attack+(random.randrange(1,3))-wih.defense
-  if dam<=0:
-    pass
-  if dam>0:
-    wih.Hp -= dam
-savefont= p.font.Font('freesansbold.ttf', 40)
-textsave1 = savefont.render('Save file 1', True, black,white)
-textRectsave1 = textsave1.get_rect()
-textRectsave1.center = (250,50)
-textsave2 = savefont.render('Save file 2', True, black,white)
-textRectsave2 = textsave2.get_rect()
-textRectsave2.center = (250,120)
-textsave3 = savefont.render('Save file 3', True, black,white)
-textRectsave3 = textsave3.get_rect()
-textRectsave3.center = (250,190)
-textsave4 = savefont.render('Save file 4', True, black,white)
-textRectsave4 = textsave4.get_rect()
-textRectsave4.center = (250,260)
-#[x,y,image,level,gxp,xpn,stats,inv,enemies]
 def savegame():
   global savefile,savedata
   In.checkslot()
-  savedata=[x,y,direction,Xp.level,Xp.gxp,Xp.xpn,sta.mcstats,In.slotItem,ahhhhhhhh,sta.mc.Hp,var]
+  savedata=[x,y,direction,Xp.level,Xp.gxp,Xp.xpn,sta.mcstats,In.slotItem,ahhhhhhhh,sta.mc.Hp,var,room]
   if savefile == 1:
     with open('SaveFiles/Savefile1.txt','w') as saved:
       json.dump(savedata,saved)
@@ -206,66 +154,92 @@ once=0
 r = False
 begin=False
 Startscreen=True
-textscreen = font999.render('Dynasty', True, black,white)
-textRectscreen = textscreen.get_rect()
-textRectscreen.center = (250,50)
-textscreen1 = font.render('Start', True, black,white)
-textRectscreen1 = textscreen1.get_rect()
-textRectscreen1.center = (250,100)
-textscreen2 = font.render('Settings', True, black,white)
-textRectscreen2 = textscreen2.get_rect()
-textRectscreen2.center = (250,150)
-textscreen3 = font.render('Quit', True, black,white)
-textRectscreen3 = textscreen3.get_rect()
-textRectscreen3.center = (250,200)
-user_text = ''
-Passwordtext = ''
-Password = font.render(Passwordtext,True,black)
-texts = font.render('password?',True,black,white)
-texts2 = font.render('yes/', True, black, white)
-texts3 = font.render('No', True, black, white)
-textsRect = p.Rect(150,50,200,150)
-texts2Rect = texts2.get_rect()
-texts2Rect.center = (200,200)
-texts3Rect = texts3.get_rect()
-texts3Rect.center = (260,200)
-texts4Rect = p.Rect(150,100,200,150)
+out = [0]
+once2=0
+def textboxcreate():
+  global textbox,itemtext,texttracker,textamount,out,once2
+  textamount = len(out)
+  if textbox:
+    p.draw.rect(s.ds,(93,93,93),p.Rect(0,200,500,100))
+    p.draw.rect(s.ds,black,p.Rect(0,200,500,3))
+    n = 30
+    out = [(itemtext[i:i+n]) for i in range(0, len(itemtext), n)]
+    Text = text.font.render(out[texttracker], True, black)
+    TextR = p.Rect(0,200,500,100)
+    TextR.topleft = (5,205)
+    s.ds.blit(Text,TextR)
+    if len(itemtext) > 30:
+      Text2 = text.font.render(out[texttracker+1], True, black)
+      TextR2 = p.Rect(0,250,500,50)
+      TextR2.topleft = (5,255)
+      s.ds.blit(Text2,TextR2)
+    elif not len(itemtext) > 30:
+      TextR2 = p.Rect(0,200,500,100)
+    if (mouseover(TextR) or mouseover(TextR2)) and once2 ==0:
+      texttracker +=1
+      once2 = 1
+      if texttracker+1 >= textamount:
+        texttracker = 0
+        out = [0]
+        textbox = False
+    elif not mouseover(TextR) and not mouseover(TextR2):
+      once2 = 0
+        
+  elif not textbox:
+    out = [0]
+interactbo=p.draw.rect(s.ds,black,p.Rect(200,200,100,50))
+interactest = False
+itemtext = ''
+def interitem(item,X,Y,width,height,wall,text):
+  global x,y,interactbo,interactest,itemtext
+  picture = p.transform.scale(item,(width,height))
+  name=s.ds.blit(picture, (x+X, y+Y))
+  if name.colliderect(interactbo) and not interactest:
+    interactest = True
+    itemtext = text
+  elif not name.colliderect(interactbo):
+    interactest = False
+    itemtext = ''
+  if wall:
+    collidewall(name)
+def interactbox():
+  global direction,interactbo,interactest,textbox
+  if direction == 1:
+      interactbo=p.draw.rect(s.ds,black,p.Rect(200,200,100,50))
+  elif direction == 2:
+      interactbo=p.draw.rect(s.ds,black,p.Rect(290,100,50,100))
+  elif direction == 3:
+    interactbo=p.draw.rect(s.ds,black,p.Rect(200,50,100,50))
+  elif direction == 4:
+    interactbo=p.draw.rect(s.ds,black,p.Rect(170,100,50,100))
 while Startscreen:
-  ds.fill(white)
-  ds.blit(textscreen,textRectscreen)
-  ds.blit(textscreen1,textRectscreen1)
-  ds.blit(textscreen2,textRectscreen2)
-  ds.blit(textscreen3,textRectscreen3)
+  s.ds.fill(white)
+  s.ds.blit(text.textscreen,text.textRectscreen)
+  s.ds.blit(text.textscreen1,text.textRectscreen1)
+  s.ds.blit(text.textscreen2,text.textRectscreen2)
+  s.ds.blit(text.textscreen3,text.textRectscreen3)
   for event in p.event.get():
-    if mouseover(textRectscreen1):
+    if mouseover(text.textRectscreen1):
       Startscreen = False
       begin = True
-    if event.type == p.KEYDOWN:
-      if event.key == p.K_BACKSPACE:
-        user_text = user_text[:-1]
-      else:
-        user_text += event.unicode
-  testext= font.render(user_text, True, black)
-  testRect = testext.get_rect()
-  testRect.center = (250,250)
-  ds.blit(testext,testRect)
+  s.screen.blit(s.ds,(0,0))
   p.display.flip()
 ahhhahhh=0
 yn=0
 while begin:
-  ds.fill(white)
+  s.ds.fill(white)
   clock.tick(60)
-  ds.blit(textsave1,textRectsave1)
-  ds.blit(Trash, Trash_rect1)
-  ds.blit(textsave2,textRectsave2)
-  ds.blit(Trash, Trash_rect2)
-  ds.blit(textsave3,textRectsave3)
-  ds.blit(Trash, Trash_rect3)
-  ds.blit(textsave4,textRectsave4)
-  ds.blit(Trash, Trash_rect4)
+  s.ds.blit(text.textsave1,text.textRectsave1)
+  s.ds.blit(Trash, Trash_rect1)
+  s.ds.blit(text.textsave2,text.textRectsave2)
+  s.ds.blit(Trash, Trash_rect2)
+  s.ds.blit(text.textsave3,text.textRectsave3)
+  s.ds.blit(Trash, Trash_rect3)
+  s.ds.blit(text.textsave4,text.textRectsave4)
+  s.ds.blit(Trash, Trash_rect4)
   if ahhhahhh==0:
     for event in p.event.get():
-      if mouseover(textRectsave1):
+      if mouseover(text.textRectsave1):
         with open('SaveFiles/Savefile1.txt') as saved:
           savedata =json.load(saved)
         savefile=1
@@ -276,7 +250,7 @@ while begin:
           r = True
         else:
           ahhhahhh=1
-      if mouseover(textRectsave2):
+      if mouseover(text.textRectsave2):
         with open('SaveFiles/Savefile2.txt') as saved:
           savedata =json.load(saved)
         savefile=2
@@ -287,7 +261,7 @@ while begin:
           r = True
         else:
           ahhhahhh=1
-      if mouseover(textRectsave3):
+      if mouseover(text.textRectsave3):
         with open('SaveFiles/Savefile3.txt') as saved:
           savedata =json.load(saved)
         savefile=3
@@ -298,7 +272,7 @@ while begin:
           r = True
         else:
           ahhhahhh=1
-      if mouseover(textRectsave4):
+      if mouseover(text.textRectsave4):
         with open('SaveFiles/Savefile1.txt') as saved:
           savedata =json.load(saved)
         savefile=4
@@ -348,7 +322,7 @@ while begin:
           once = 1
         elif not checkpass== 'None' or 'nothing': 
             ahhhahhh=2
-      elif mouseover(Trash_rect2) and once == 0:
+      elif mouseover(Trash_rect4) and once == 0:
         savefile=4
         checkpass = os.environ['password4']
         if checkpass == 'None' or '':
@@ -365,65 +339,71 @@ while begin:
         once = 0
   if ahhhahhh==1:
     #150,50,200,150
-    p.draw.rect(ds,(0,0,0),p.Rect(0,0,1000,1000))
-    p.draw.rect(ds,white,p.Rect(150,50,200,200))
-    ds.blit(texts,textsRect)
+    p.draw.rect(s.ds,(0,0,0),p.Rect(0,0,1000,1000))
+    p.draw.rect(s.ds,white,p.Rect(150,50,200,200))
+    s.ds.blit(text.texts,text.textsRect)
     if pass1 == 'nothing' and yn == 0:
-      ds.blit(texts2,texts2Rect)
-      ds.blit(texts3,texts3Rect)
-      if mouseover(texts3Rect):
+      s.ds.blit(text.texts2,text.texts2Rect)
+      s.ds.blit(text.texts3,text.texts3Rect)
+      if mouseover(text.texts3Rect):
         os.environ[('password'+str(savefile))]= 'None'
-      elif mouseover(texts2Rect):
+      elif mouseover(text.texts2Rect):
         yn = 1
     print(yn)
     if yn == 1:
       for event in p.event.get():
         if event.type == p.KEYDOWN:
           if event.key == p.K_BACKSPACE:
-            Passwordtext = Passwordtext[:-1]
+            text.Passwordtext = text.Passwordtext[:-1]
           elif event.key == p.K_ENTER:
-            os.environ[('password'+str(savefile))]=Passwordtext
-            Passwordtext = ''
+            os.environ[('password'+str(savefile))]=text.Passwordtext
+            text.Passwordtext = ''
             ahhhahhh=0
           else:
-            Passwordtext += event.unicode
-      Password = font.render(Passwordtext,True,black)
-      ds.blit(Password,texts4Rect)
+            text.Passwordtext += event.unicode
+      Password = text.font.render(text.Passwordtext,True,black)
+      s.ds.blit(Password,text.texts4Rect)
     elif not pass1 =='nothing':
       for event in p.event.get():
         if event.type == p.KEYDOWN:
           if event.key == p.K_BACKSPACE:
-            Passwordtext = Passwordtext[:-1]
+            text.Passwordtext = text.Passwordtext[:-1]
           else:
-            Passwordtext += event.unicode
-      Password = font.render(Passwordtext,True,black)
-      ds.blit(Password,texts4Rect)
-    if Passwordtext == pass1:
+            text.Passwordtext += event.unicode
+      Password = text.font.render(text.Passwordtext,True,black)
+      s.ds.blit(Password,text.texts4Rect)
+    if text.Passwordtext == pass1:
       begin = False
       r = True
   elif ahhhahhh == 2:
-    p.draw.rect(ds,(0,0,0),p.Rect(0,0,1000,1000))
-    p.draw.rect(ds,white,p.Rect(150,50,200,200))
-    ds.blit(texts,textsRect)
+    p.draw.rect(s.ds,(0,0,0),p.Rect(0,0,1000,1000))
+    p.draw.rect(s.ds,white,p.Rect(150,50,200,200))
+    s.ds.blit(text.texts,text.textsRect)
     pass1 = os.environ[('password'+str(savefile))]
     for event in p.event.get():
         if event.type == p.KEYDOWN:
           if event.key == p.K_BACKSPACE:
-            Passwordtext = Passwordtext[:-1]
+            text.Passwordtext = text.Passwordtext[:-1]
           else:
-            Passwordtext += event.unicode
-    Password = font.render(Passwordtext,True,black)
-    ds.blit(Password,texts4Rect)
-    if Passwordtext == pass1:
+            text.Passwordtext += event.unicode
+    Password = text.font.render(text.Passwordtext,True,black)
+    s.ds.blit(Password,text.texts4Rect)
+    if text.Passwordtext == pass1:
       with open('SaveFiles/Start_save.txt') as saved:
             savedata =json.load(saved)
       with open('SaveFiles/Savefile'+str(savefile)+'.txt','w') as saved:
             json.dump(savedata,saved)
       print('save' + str(savefile)+ ' Deleted')
       ahhhahhh=0
+  s.screen.blit(s.ds,(0,0))
   p.display.flip()
 
 yesxy=0
+#wall1 = p.draw.rect(ds, color, p.Rect(x, y-50, 500, 100))
+rect1 = p.draw.rect(s.ds, color, p.Rect(x, y-50, 500, 100))
+wall2 = p.draw.rect(s.ds, color, p.Rect(x-100, y,100, 1000))
+wall3 = p.draw.rect(s.ds, color, p.Rect(x, y+500,1000, 100))
+wall4 =p.draw.rect(s.ds, color, p.Rect(x+500, y,100, 1000))
 while r:
   #[x,y,image,level,gxp,xpn,stats,inv,enemies]
     if once== 0:
@@ -453,32 +433,33 @@ while r:
       sta.mc.maxHp = sta.mcstats[2]+sta.itemstats[In.slotitemid[In.inv[8]]][2] +sta.itemstats[In.slotitemid[In.inv[9]]][2]
       sta.mc.mana = sta.mcstats[3]+sta.itemstats[In.slotitemid[In.inv[8]]][3] +sta.itemstats[In.slotitemid[In.inv[9]]][3]
       sta.mc.luck = sta.mcstats[4]+sta.itemstats[In.slotitemid[In.inv[8]]][3] +sta.itemstats[In.slotitemid[In.inv[9]]][3]
+      room = savedata[11]
       once = 1
     mx,my = p.mouse.get_pos()
     clock.tick(60)
     for event in p.event.get():
         if event.type == p.KEYUP:
             if event.key == p.K_e:
-                if S == 0:
-                    S = 1
+                if sta.S == 0:
+                    sta.S = 1
                     event.key = p.K_p
-                elif event.key == p.K_e and S==1:
-                    S = 0
+                elif event.key == p.K_e and sta.S==1:
+                    sta.S = 0
                     event.key = p.K_p
             elif event.key == p.K_ESCAPE:
-                if S == 0:
-                    S = 2
+                if sta.S == 0:
+                    sta.S = 2
                     event.key = p.K_p
                     P = 1
-                elif S == 1:
-                    S = 2
+                elif sta.S == 1:
+                    sta.S = 2
                     event.key = p.K_p
                     P = 2
-                elif S == 2 and P == 1:
-                    S = 0
+                elif sta.S == 2 and P == 1:
+                    sta.S = 0
                     event.key = p.K_p
-                elif S == 2 and P == 2:
-                    S = 1
+                elif sta.S == 2 and P == 2:
+                    sta.S = 1
                     event.key = p.K_p
             if event.key == p.K_v:
                     savegame()
@@ -490,47 +471,80 @@ while r:
                 else:
                     drawGrid = False
                     event.key = p.K_p
-    if mouseover(textRect3) and S == 2:
-      S=3
+            if interactest and event.key == p.K_f:
+              if not textbox:
+                textbox = True
+              else:
+                texttracker +=1
+                if texttracker+1 >= textamount:
+                  texttracker = 0
+                  textbox = False
+                  out = [0] 
+              event.key = p.K_p 
+    if mouseover(text.textRect3) and sta.S == 2:
+      sta.S=3
       ahh = 1
     if trrr==0:
-      if  mouseover(textRect4) and ahh==1:
-        S=2
+      if  mouseover(text.textRect4) and ahh==1:
+        sta.S=2
         ahh = 0
         trrr=1
-      elif mouseover(textRect4) and P==1:
-        S=0
+      elif mouseover(text.textRect4) and P==1:
+        sta.S=0
         trrr=1
-      elif mouseover(textRect4) and P==2:
-        S=1
+      elif mouseover(text.textRect4) and P==2:
+        sta.S=1
         trrr=1
-    if not mouseover(textRect4):
+    if not mouseover(text.textRect4):
       trrr=0
-    rect1 = p.draw.rect(ds, color, p.Rect(x, y, 500, 50))
+    rect1 = p.draw.rect(s.ds, color, p.Rect(x, y-50, 500, 100))
     if drawGrid:
             drawG()
 #overworld
-    if S == 0:
-        textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-        textlv2 = font2.render('Lv:' + str(Xp.level),True,black,white)
-        textRectlv2 = textlv2.get_rect()
-        textRectlv2.topright = (500,0)
+    if sta.S == 0:
+        interactbox()
         yes =0
         P=0
         array = [[0,0],[0,0]]
-        ds.fill(white)
-        ds.blit(sta.mc.image, (sta.mc.x, sta.mc.y))
-        rect1 = p.draw.rect(ds, color, p.Rect(x, y, 500, 50))
+        im.P1 = p.transform.scale(im.g5, (im.wi, 100))
+        if room == 0:
+          s.ds.fill(white)
+          rect1 = p.draw.rect(s.ds, color, p.Rect(x, y-50, 500, 100))
+          item(1,In.itemid[2],-50,100,50,50)
+          item(2,In.itemid[3],500,150,50,50)
+          ENEMY(0,sta.enemy[0],100,200,50,50)
+          ENEMY(1,sta.enemy[0],200,400,50,50)
+          ENEMY(2,sta.enemy[0],250,490,50,50)
+          ENEMY(3,sta.enemy[0],20,490,50,50)
+          ENEMY(4,sta.enemy[0],20,50,50,50)
+          interitem(im.Rei,900,150,100,120,True,'yo, how you doing?')
+          door=s.ds.blit(p.transform.scale(im.door,(50,75)),(x+150,y-25))
+          if collide(door):
+            room = 1
+            y-=350
+            x-=100
+        if room == 1:
+          s.ds.fill(white)
+          rect1 = p.draw.rect(s.ds, color, p.Rect(x, y-90, 500, 140))
+          wall2 = p.draw.rect(s.ds, color, p.Rect(x-1000, y-100,1000, 1000))
+          wall3 = p.draw.rect(s.ds, color, p.Rect(x, y+500,1000, 100))
+          wall4 =p.draw.rect(s.ds, color, p.Rect(x+500, y-100,500, 1000))
+          door=s.ds.blit(p.transform.scale(im.door,(50,75)),(x+230,y+490))
+          interitem(im.sign,400,50,50,50,True,'this is a sign, how bout that, a sign here, who couldve      guessed, its almost like it  was put here as a way to test how the textbox in this game  was to work, nah who would     be dumb enough to do that?')
+          item(1,In.itemid[2],50,100,50,50)
+          item(2,In.itemid[3],50,150,50,50)
+          ENEMY(5,sta.enemy[0],100,200,50,50)
+          if collide(door):
+            room = 0
+            y+=350
+            x+=100
+        s.ds.blit(sta.mc.image, (sta.mc.x, sta.mc.y))
         im.P1 = p.transform.scale(im.g5, (im.wi, 100))
         sta.mc.image = im.P1
-        item(1,In.itemid[2],-50,100,50,50)
-        item(2,In.itemid[3],500,150,50,50)
-        ENEMY(0,sta.enemy[0],100,200,50,50)
-        ENEMY(1,sta.enemy[0],200,400,50,50)
-        ENEMY(2,sta.enemy[0],250,490,50,50)
-        ENEMY(3,sta.enemy[0],20,490,50,50)
-        ENEMY(4,sta.enemy[0],20,50,50,50)
-        ds.blit(textlv2, textRectlv2)
+        textlv2 = text.font2.render('Lv:' + str(Xp.level),True,black,white)
+        textRectlv2 = textlv2.get_rect()
+        textRectlv2.topright = (500,0)
+        s.ds.blit(textlv2, textRectlv2)
         if drawGrid:
             drawG()
         if value >= len(im.Ua):
@@ -539,39 +553,45 @@ while r:
             if event.type == p.QUIT:
                 p.quit()
         testdeath=0
+        textboxcreate()
 #movement for the player
-        if event.type == p.KEYDOWN:
-            if event.key == p.K_LEFT:
+        if not textbox:
+          if event.type == p.KEYDOWN:
+              if event.key == p.K_LEFT:
                 im.g5 = im.La[value]
                 x += 5
                 wi = 77
-            if event.key == p.K_RIGHT:
+                direction = 4
+              if event.key ==p.K_RIGHT:
                 im.g5 = im.Ra[value]
                 x -= 5
                 wi = 77
-            if event.key == p.K_UP:
+                direction = 2
+              if event.key == p.K_UP:
                 im.g5 = im.Ua[value]
                 y += 5
                 wi = 77
-            if event.key == p.K_DOWN:
+                direction = 3
+              if event.key ==  p.K_DOWN:
                 im.g5 = im.Da[value]
                 y -= 5
                 wi = 87
-        if event.type == p.KEYUP:
-            if event.key == p.K_LEFT:
+                direction = 1
+          if event.type == p.KEYUP:
+              if event.key == p.K_LEFT:
                 im.g5 = im.Li
                 direction = 4
-            if event.key == p.K_RIGHT:
+              if event.key == p.K_RIGHT:
                 im.g5 = im.Ri
                 direction = 2
-            if event.key == p.K_UP:
+              if event.key == p.K_UP:
                 im.g5 = im.Ui
                 direction = 3
-            if event.key == p.K_DOWN:
+              if event.key == p.K_DOWN:
                 im.g5 = im.Di
                 direction = 1
 #inventory screen
-    elif S == 1:
+    elif sta.S == 1:
         Slot1 = p.transform.scale(In.inv[0], (50, 50))
         Slot2 = p.transform.scale(In.inv[1], (50, 50))
         Slot3 = p.transform.scale(In.inv[2], (50, 50))
@@ -584,230 +604,69 @@ while r:
         ESlotW = p.transform.scale(In.inv[9], (50,50))
         ESlotP = p.transform.scale(In.inv[10], (50,50))
         if not drawGrid:
-          ds.fill(color)
+          s.ds.fill(color)
           color2 = (255,255,255)
         else:
-          ds.fill(white)
+          s.ds.fill(white)
           color2 = (0,0,0)
         for i in In.slotArray:
-          i.draw(ds)
+          i.draw(s.ds)
         for i in In.slotArray2:
-          i.draw2(ds)
+          i.draw2(s.ds)
         if drawGrid:
             drawG()
-        EquipArm=p.draw.rect(ds,color2,p.Rect(50,0,50,50))
-        EquipWeap=p.draw.rect(ds,color2,p.Rect(150,0,50,50))
-        EquipPot=p.draw.rect(ds,color2,p.Rect(250,0,50,50))
-        S1=ds.blit(Slot1,(50,100))
-        ds.blit(Slot2,(150,100))
-        ds.blit(Slot3,(250,100))
-        ds.blit(Slot4,(350,100))
-        ds.blit(Slot5,(50,200))
-        ds.blit(Slot6,(150,200))
-        ds.blit(Slot7,(250,200))
-        ds.blit(Slot8,(350,200))
-        ds.blit(ESlotA,(50,0))
-        ds.blit(ESlotW,(150,0))
-        ds.blit(ESlotP,(250,0))
-        ds.blit(textlv2, textRectlv2)
+        EquipArm=p.draw.rect(s.ds,color2,p.Rect(50,0,50,50))
+        EquipWeap=p.draw.rect(s.ds,color2,p.Rect(150,0,50,50))
+        EquipPot=p.draw.rect(s.ds,color2,p.Rect(250,0,50,50))
+        S1=s.ds.blit(Slot1,(50,100))
+        s.ds.blit(Slot2,(150,100))
+        s.ds.blit(Slot3,(250,100))
+        s.ds.blit(Slot4,(350,100))
+        s.ds.blit(Slot5,(50,200))
+        s.ds.blit(Slot6,(150,200))
+        s.ds.blit(Slot7,(250,200))
+        s.ds.blit(Slot8,(350,200))
+        s.ds.blit(ESlotA,(50,0))
+        s.ds.blit(ESlotW,(150,0))
+        s.ds.blit(ESlotP,(250,0))
+        s.ds.blit(textlv2, textRectlv2)
       
         In.slotselect()
 #menu screen
-    elif S == 2:
-        ds.fill(white)
-        ds.blit(text, textRect)
-        ds.blit(text2, textRect2)
-        ds.blit(text3, textRect3)
-        ds.blit(text4, textRect4)
-    elif S == 3:
-        ds.fill(white)
-        ds.blit(text5, textRect5)
-        ds.blit(text4, textRect4)
-    elif S == 21:
-      if yes==0:
-        save = im.g5
-        im.g5 = im.battleP1
-        #[defense,attack,maxhp,mana,luck,itemsheld,maxitemsheld]
-        sta.enem.defense = sta.Enemystats[sta.enem.image][0]
-        sta.enem.attack = sta.Enemystats[sta.enem.image][1]
-        sta.enem.maxHp = sta.Enemystats[sta.enem.image][2]
-        sta.enem.Hp = sta.Enemystats[sta.enem.image][3]
-        sta.enem.mana = sta.Enemystats[sta.enem.image][4]
-        yes = 1
-      im.P1 = p.transform.scale(im.g5,(pbw,pbh))
-      playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-      enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-      ds.fill(white)
-      enemy1hpbar=p.draw.rect(ds, red, p.Rect(350, 10, 100, 15)),p.draw.rect(ds, green, p.Rect(350, 10, enemhp, 15))
-      playerhpbar=p.draw.rect(ds, red, p.Rect(0, 215, 100, 10)),p.draw.rect(ds, green, p.Rect(0, 215, playerhp, 10))
-      eh=p.transform.scale(sta.enem.image,(50,50))
-      ds.blit(eh,(350,50))
-      ds.blit(im.P1,(pbx,pby))
-      p.draw.rect(ds, grey, p.Rect(0, 225, 500, 90))
-      playerxp = 100-((Xp.gxp/Xp.xpn)*100)
-      playerxpbar=p.draw.rect(ds, (0,101,255), p.Rect(375, 215, 100, 10)),p.draw.rect(ds, (135,206,250), p.Rect(375, 215, 100-(playerxp+1), 10))
-      ds.blit(textHp,textRectHp)
-      ds.blit(text7, textRect7)
-      ds.blit(text8, textRect8)
-      ds.blit(text9, textRect9)
-      ds.blit(text10, textRect10)
-      if mouseover(textRect7):
-        if de == 0:
-          while at<=21:
-              clock.tick(60)
-              at+=1
-              pbx +=11
-              pby -=5
-              pbh -=4
-              pbw-=4
-              textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-              im.P1 = p.transform.scale(im.g5,(pbw,pbh))
-              playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-              enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-              ds.fill(white)
-              enemy1hpbar=p.draw.rect(ds, red, p.Rect(350, 10, 100, 15)),p.draw.rect(ds, green, p.Rect(350, 10, enemhp, 15))
-              playerhpbar=p.draw.rect(ds, red, p.Rect(0, 215, 100, 10)),p.draw.rect(ds, green, p.Rect(0, 215, playerhp, 10))
-              eh=p.transform.scale(sta.enem.image,(ebw,ebh))
-              ds.blit(eh,(ebx,eby))
-              ds.blit(im.P1,(pbx,pby))
-              p.draw.rect(ds, grey, p.Rect(0, 225, 500, 90))
-              ds.blit(textHp,textRectHp)
-              playerxp = 100-((Xp.gxp/Xp.xpn)*100)
-              playerxpbar=p.draw.rect(ds, (0,101,255), p.Rect(375, 215, 100, 10)),p.draw.rect(ds, (135,206,250), p.Rect(375, 215, 100-(playerxp+1), 10))
-              p.display.flip()
-          damage(sta.enem,sta.mc)
-          playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-          enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-          ds.fill(white)
-          textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-          enemy1hpbar=p.draw.rect(ds, red, p.Rect(350, 10, 100, 15)),p.draw.rect(ds, green, p.Rect(350, 10, enemhp, 15))
-          playerhpbar=p.draw.rect(ds, red, p.Rect(0, 215, 100, 10)),p.draw.rect(ds, green, p.Rect(0, 215, playerhp, 10))
-          eh=p.transform.scale(sta.enem.image,(50,50))
-          ds.blit(eh,(350,50))
-          ds.blit(im.P1,(pbx,pby))
-          p.draw.rect(ds, grey, p.Rect(0, 225, 500, 90))
-          ds.blit(textHp,textRectHp)
-          playerxp = 100-((Xp.gxp/Xp.xpn)*100)
-          playerxpbar=p.draw.rect(ds, (0,101,255), p.Rect(375, 215, 100, 10)),p.draw.rect(ds, (135,206,250), p.Rect(375, 215, 100-(playerxp+1), 10))
-          p.display.flip()
-          while at>=1:
-              clock.tick(60)
-              at-=1
-              pbx -=11
-              pby +=5
-              pbh +=4
-              pbw+=4
-              textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-              im.P1 = p.transform.scale(im.g5,(pbw,pbh))
-              playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-              enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-              ds.fill(white)
-              enemy1hpbar=p.draw.rect(ds, red, p.Rect(350, 10, 100, 15)),p.draw.rect(ds, green, p.Rect(350, 10, enemhp, 15))
-              playerhpbar=p.draw.rect(ds, red, p.Rect(0, 215, 100, 10)),p.draw.rect(ds, green, p.Rect(0, 215, playerhp, 10))
-              eh=p.transform.scale(sta.enem.image,(50,50))
-              ds.blit(eh,(350,50))
-              ds.blit(im.P1,(pbx,pby))
-              p.draw.rect(ds, grey, p.Rect(0, 225, 500, 90))
-              ds.blit(textHp,textRectHp)
-              playerxp = 100-((Xp.gxp/Xp.xpn)*100)
-              playerxpbar=p.draw.rect(ds, (0,101,255), p.Rect(375, 215, 100, 10)),p.draw.rect(ds, (135,206,250), p.Rect(375, 215, 100-(playerxp+1), 10))
-              p.display.flip()
-          if sta.enem.Hp<=0:
-            testdeath=1
-            im.g5=save
-            Xp.gainedxp(sta.hmmm)
-            S=0
-          else:
-              while at<=21:
-                  clock.tick(60)
-                  at+=1
-                  ebx -=11
-                  eby +=5
-                  ebh +=2
-                  ebw+=2
-                  textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-                  im.P1 = p.transform.scale(im.g5,(pbw,pbh))
-                  playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-                  enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-                  ds.fill(white)
-                  enemy1hpbar=p.draw.rect(ds, red, p.Rect(350, 10, 100, 15)),p.draw.rect(ds, green, p.Rect(350, 10, enemhp, 15))
-                  playerhpbar=p.draw.rect(ds, red, p.Rect(0, 215, 100, 10)),p.draw.rect(ds, green, p.Rect(0, 215, playerhp, 10))
-                  playerxp = 100-((Xp.gxp/Xp.xpn)*100)
-                  playerxpbar=p.draw.rect(ds, (0,101,255), p.Rect(375, 215, 100, 10)),p.draw.rect(ds, (135,206,250), p.Rect(375, 215, 100-(playerxp+1), 10))
-                  eh=p.transform.scale(sta.enem.image,(ebw,ebh))
-                  ds.blit(eh,(ebx,eby))
-                  ds.blit(im.P1,(pbx,pby))
-                  p.draw.rect(ds, grey, p.Rect(0, 225, 500, 90))
-                  ds.blit(textHp,textRectHp)
-                  p.display.flip()
-              damage(sta.mc,sta.enem)
-              playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-              enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-              ds.fill(white)
-              textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-              im.P1 = p.transform.scale(im.g5,(pbw,pbh))
-              playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-              enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-              ds.fill(white)
-              enemy1hpbar=p.draw.rect(ds, red, p.Rect(350, 10, 100, 15)),p.draw.rect(ds, green, p.Rect(350, 10, enemhp, 15))
-              playerhpbar=p.draw.rect(ds, red, p.Rect(0, 215, 100, 10)),p.draw.rect(ds, green, p.Rect(0, 215, playerhp, 10))
-              playerxp = 100-((Xp.gxp/Xp.xpn)*100)
-              playerxpbar=p.draw.rect(ds, (0,101,255), p.Rect(375, 215, 100, 10)),p.draw.rect(ds, (135,206,250), p.Rect(375, 215, 100-(playerxp+1), 10))
-              eh=p.transform.scale(sta.enem.image,(ebw,ebh))
-              ds.blit(eh,(ebx,eby))
-              ds.blit(im.P1,(pbx,pby))
-              p.draw.rect(ds, grey, p.Rect(0, 225, 500, 90))
-              ds.blit(textHp,textRectHp)
-              p.display.flip()
-              while at>=1:
-                  clock.tick(60)
-                  at-=1
-                  ebx +=11
-                  eby -=5
-                  ebh -=2
-                  ebw-=2
-                  textHp = fonthp.render(str(sta.mc.Hp)+'/'+str(sta.mc.maxHp), True, black)
-                  im.P1 = p.transform.scale(im.g5,(pbw,pbh))
-                  playerhp = (sta.mc.Hp/sta.mc.maxHp)*100
-                  enemhp = (sta.enem.Hp/sta.enem.maxHp)*100
-                  ds.fill(white)
-                  enemy1hpbar=p.draw.rect(ds, red, p.Rect(350, 10, 100, 15)),p.draw.rect(ds, green, p.Rect(350, 10, enemhp, 15))
-                  playerhpbar=p.draw.rect(ds, red, p.Rect(0, 215, 100, 10)),p.draw.rect(ds, green, p.Rect(0, 215, playerhp, 10))
-                  eh=p.transform.scale(sta.enem.image,(ebw,ebh))
-                  playerxp = 100-((Xp.gxp/Xp.xpn)*100)
-                  playerxpbar=p.draw.rect(ds, (0,101,255), p.Rect(375, 215, 100, 10)),p.draw.rect(ds, (135,206,250), p.Rect(375, 215, 100-(playerxp+1), 10))
-                  ds.blit(eh,(ebx,eby))
-                  ds.blit(im.P1,(pbx,pby))
-                  p.draw.rect(ds, grey, p.Rect(0, 225, 500, 90))
-                  ds.blit(textHp,textRectHp)
-                  p.display.flip()
-          de=1
-      elif not mouseover(textRect7):
-        de=0
-      if mouseover(textRect8):
-        pbx-=20
-        pby+=15
-        print(de)
-      if sta.enem.Hp<=0:
-        im.g5=save
-        testdeath = 1
-        Xp.gainedxp(sta.hmmm)
-        S=0
-    elif S == None:
-      ds.fill(black)
-      ds.blit(text999,textRect999)
-    collideU = rect1.collidepoint(sta.mc.rect.topleft) or rect1.collidepoint(sta.mc.rect.topright) or rect1.collidepoint(sta.mc.rect.midtop)
-    collideD = rect1.collidepoint(sta.mc.rect.midbottom) or rect1.collidepoint(sta.mc.rect.bottomleft) or rect1.collidepoint(sta.mc.rect.bottomright)
-    collideR = rect1.collidepoint(sta.mc.rect.midright) or rect1.collidepoint(sta.mc.rect.topright) or rect1.collidepoint(sta.mc.rect.bottomright)
-    collideL = rect1.collidepoint(sta.mc.rect.midleft) or rect1.collidepoint(sta.mc.rect.topleft) or rect1.collidepoint(sta.mc.rect.bottomleft)
+    elif sta.S == 2:
+        s.ds.fill(white)
+        s.ds.blit(text.text, text.textRect)
+        s.ds.blit(text.text2, text.textRect2)
+        s.ds.blit(text.text3, text.textRect3)
+        s.ds.blit(text.text4, text.textRect4)
+    elif sta.S == 3:
+        s.ds.fill(white)
+        s.ds.blit(text.text5, text.textRect5)
+        s.ds.blit(text.text4, text.textRect4)
+    elif sta.S == 21:
+      battle.battlesequence()
+      battle.attack()
+      battle.Defend()
+    elif sta.S == None:
+      s.ds.fill(black)
+      s.ds.blit(text.text999,text.textRect999)
+    collidewall(rect1)
+    collidewall(wall2)
+    collidewall(wall3)
+    collidewall(wall4)
     if collideL:
         x -= 10
+        collideL = False
     if collideR:
         x += 10
+        collideR = False
     if collideU:
         y -= 10
+        collideU = False
     if collideD:
         y += 10
+        collideD = False
+    s.screen.blit(s.ds,(0,0))
     p.display.flip()  # update display
     tryhard += 1
     if drawGrid:
@@ -815,5 +674,6 @@ while r:
     if tryhard == 10:
         value += 1
         tryhard = 0
+
     if sta.mc.Hp<= 0:
-      S=None
+        S=None

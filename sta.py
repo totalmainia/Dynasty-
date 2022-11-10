@@ -1,5 +1,6 @@
 import pygame as p
 import im
+S = 0
 class Player(object):
     def __init__(self):
         super().__init__()

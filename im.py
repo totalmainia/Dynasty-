@@ -1,4 +1,6 @@
 import pygame as p
+import s
+clock = p.time.Clock()
 wi = 87
 temp = p.image.load('temp.png')
 ES = p.image.load("box.png")
@@ -23,6 +25,52 @@ Ra = [
     p.image.load('I/righti.png'),
     p.image.load('I/right3.png')
 ]
+sign = p.image.load('Items/sign.png')
+Rei = p.image.load('NPC/ReiA.png')
 battleP1 = p.image.load('I/battle.png')
+door = p.image.load('apy/DOOR.png')
 g5 = Di
 P1 =  p.transform.scale(g5, (wi, 100))
+def changecolor(image,color,x,y):
+  colorImage = p.Surface(image.get_size()).convert_alpha()
+  colorImage.fill(color)
+  image.blit(colorImage, (0,0), special_flags = p.BLEND_RGBA_MULT)
+  s.ds.blit(image,(x,y))
+once = 0
+originalimage = 0
+dt = 0
+timer = 0
+image_bright =0
+#def blink(image_normal,color,x,y,width,length,lengthofblink):
+ # global once,image_bright,timer,dt,clock
+  #if once == 0:
+   # clock = p.time.Clock()
+    #image_normal = p.Surface((width, length))
+    #image_normal.fill(p.Color(color))
+    #image_bright = image_normal.copy()
+    #image_bright.fill((0, 200, 0, 128),           special_flags=p.BLEND_RGBA_ADD)
+    #image = image_normal  # The currently selected image.
+    #once = 1
+  #for event in p.event.get():
+    #if event.type == p.MOUSEBUTTONDOWN:
+            #image = image_bright  # Swap the image.
+            #timer = .5  # 0.5 seconds.
+
+    #timer -= dt
+    #if timer <= 0:
+        #image = image_normal  # Set the image back to the normal version.
+        #timer = 0
+
+    #ds.blit(image, (x, y))
+    #p.display.flip()
+    #dt = clock.tick(60) / 100
+def blink(image,changecolor,last):
+  global dt,P1
+  colorImage = p.Surface(image.get_size()).convert_alpha()
+  colorImage.fill(changecolor,special_flags=p.BLEND_RGBA_MAX)
+  if dt<last:
+    P1 = image
+    dt+=1
+  if dt>last:
+    P1 = colorImage
+    dt-=1

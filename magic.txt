@@ -1,0 +1,12 @@
+Arcane armor:
+  No clue how you're balancing the stats, lad. Just add defence for the duration of the battle, make it cost alot of mana and only be used once per battle
+
+Fireball:
+  Splash damage, medium damage, fair mana usage
+
+summon clam:
+  Clam fights for you, takes enemy aggro, not much health but plenty of defence, I will take no questions.
+
+Lightning: 
+  Single target, lots of damage, fair mana usage
+
