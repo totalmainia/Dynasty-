@@ -10,3 +10,6 @@ summon clam:
 Lightning: 
   Single target, lots of damage, fair mana usage
 
+heal mist:
+  heals all of team, small HP gain
+

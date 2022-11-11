@@ -41,6 +41,10 @@ originalimage = 0
 dt = 0
 timer = 0
 image_bright =0
+
+party1 = battleP1
+party2 = battleP1
+
 #def blink(image_normal,color,x,y,width,length,lengthofblink):
  # global once,image_bright,timer,dt,clock
   #if once == 0:
@@ -64,13 +68,3 @@ image_bright =0
     #ds.blit(image, (x, y))
     #p.display.flip()
     #dt = clock.tick(60) / 100
-def blink(image,changecolor,last):
-  global dt,P1
-  colorImage = p.Surface(image.get_size()).convert_alpha()
-  colorImage.fill(changecolor,special_flags=p.BLEND_RGBA_MAX)
-  if dt<last:
-    P1 = image
-    dt+=1
-  if dt>last:
-    P1 = colorImage
-    dt-=1

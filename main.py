@@ -32,12 +32,12 @@ Trash_rect3= Trash.get_rect()
 Trash_rect3.center = (400,190)
 Trash_rect4= Trash.get_rect()
 Trash_rect4.center = (400,260)
-white = (255, 255, 255,128)
-green = (0,255,0,128)
-red = (255,0,0,128)
-grey = (10,10,10,128)
-black = (0,0,0,128)
-color2 = (255,255.255,128)
+white = (255, 255, 255,255)
+green = (0,255,0,255)
+red = (255,0,0,255)
+grey = (10,10,10,255)
+black = (0,0,0,255)
+color2 = (255,255.255,255)
 color = black
 savefile=0
 ahhhhhhhh = []
@@ -645,8 +645,6 @@ while r:
         s.ds.blit(text.text4, text.textRect4)
     elif sta.S == 21:
       battle.battlesequence()
-      battle.attack()
-      battle.Defend()
     elif sta.S == None:
       s.ds.fill(black)
       s.ds.blit(text.text999,text.textRect999)
