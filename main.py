@@ -3,15 +3,6 @@
 #array[0][1],array[1][1] = arrray[1][1],array[0][1]
 import pygame as p
 import os, random, json, sta, im, In, Xp, battle, text, s
-#import random
-#import json
-#import sta
-#import im
-#import In
-#import Xp
-#import battle
-#import text
-#import s
 texttracker = 0
 textamount = 0
 direction = 1
@@ -77,7 +68,7 @@ def drawG():
     for x in range(0, 500, blockSize):
         for y in range(0, 300, blockSize):
             rect = p.Rect(x, y, blockSize, blockSize)
-            p.draw.rect(ds, black, rect, 1)
+            p.draw.rect(s.ds, black, rect, 1)
 ahhh = sta.mc.Hp
 mx,my=p.mouse.get_pos()
 def item(num,id,X,Y,width,height):
@@ -89,17 +80,22 @@ def item(num,id,X,Y,width,height):
     if In.colI(name):
       if In.additem(id):
         var[num][0]=1
-def ENEMY(num,image,X,Y,width,height):
-  global S,hmmm,ahhhhhhhh,testdeath
-  picture = p.transform.scale(image,(width,height))
+enemy=None
+def ENEMY(num,ammount,image1,image2,image3,X,Y,width,height):
+  global S,hmmm,ahhhhhhhh,testdeath,enemy
+  picture = p.transform.scale(image1,(width,height))
   if len(ahhhhhhhh)<=num:
     ahhhhhhhh.append(1)
   if ahhhhhhhh[num]==1:
     name=s.ds.blit(picture, (x+X, y+Y))
     if In.colI(name):
-      hmmm = image
+      sta.enemammount = ammount
+      sta.hmmm = image1
+      sta.hmmm2 = image2
+      sta.hmmm3 = image3
       sta.S=21
       ahhhhhhhh[num]=0
+#def ENEMYA(num,ammount,image1,image2,image3,X,Y,width,height):
 def collide(obje):
   if (obje).collidepoint(sta.mc.rect.topleft) or (obje).collidepoint(sta.mc.rect.topright) or (obje).collidepoint(sta.mc.rect.midtop):
           return True
@@ -349,7 +345,6 @@ while begin:
         os.environ[('password'+str(savefile))]= 'None'
       elif mouseover(text.texts2Rect):
         yn = 1
-    print(yn)
     if yn == 1:
       for event in p.event.get():
         if event.type == p.KEYDOWN:
@@ -512,11 +507,12 @@ while r:
           rect1 = p.draw.rect(s.ds, color, p.Rect(x, y-50, 500, 100))
           item(1,In.itemid[2],-50,100,50,50)
           item(2,In.itemid[3],500,150,50,50)
-          ENEMY(0,sta.enemy[0],100,200,50,50)
-          ENEMY(1,sta.enemy[0],200,400,50,50)
-          ENEMY(2,sta.enemy[0],250,490,50,50)
-          ENEMY(3,sta.enemy[0],20,490,50,50)
-          ENEMY(4,sta.enemy[0],20,50,50,50)
+          ENEMY(0,1,sta.enemy[0],None,None,100,200,50,50)
+          ENEMY(1,1,sta.enemy[0],None,None,200,400,50,50)
+          ENEMY(2,1,sta.enemy[0],None,None,250,490,50,50)
+          ENEMY(3,1,sta.enemy[0],None,None,20,490,50,50)
+          ENEMY(4,1,sta.enemy[0],None,None,20,50,50,50)
+          ENEMY(5,2,sta.enemy[0],sta.enemy[0],None,-290,120,50,50)
           interitem(im.Rei,900,150,100,120,True,'yo, how you doing?')
           door=s.ds.blit(p.transform.scale(im.door,(50,75)),(x+150,y-25))
           if collide(door):
@@ -533,7 +529,7 @@ while r:
           interitem(im.sign,400,50,50,50,True,'this is a sign, how bout that, a sign here, who couldve      guessed, its almost like it  was put here as a way to test how the textbox in this game  was to work, nah who would     be dumb enough to do that?')
           item(1,In.itemid[2],50,100,50,50)
           item(2,In.itemid[3],50,150,50,50)
-          ENEMY(5,sta.enemy[0],100,200,50,50)
+          ENEMY(6,3,sta.enemy[0],sta.enemy[0],sta.enemy[0],100,200,50,50)
           if collide(door):
             room = 0
             y+=350

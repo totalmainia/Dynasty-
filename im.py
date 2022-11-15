@@ -5,6 +5,7 @@ wi = 87
 temp = p.image.load('temp.png')
 ES = p.image.load("box.png")
 Empty= p.image.load('box.png')
+selector= p.image.load('selector.png')
 Stick = p.image.load('Items/stick.png')
 Wsword = p.image.load('Items/woodsword.png')
 Isword = p.image.load('Items/ironsword.png')
@@ -44,27 +45,3 @@ image_bright =0
 
 party1 = battleP1
 party2 = battleP1
-
-#def blink(image_normal,color,x,y,width,length,lengthofblink):
- # global once,image_bright,timer,dt,clock
-  #if once == 0:
-   # clock = p.time.Clock()
-    #image_normal = p.Surface((width, length))
-    #image_normal.fill(p.Color(color))
-    #image_bright = image_normal.copy()
-    #image_bright.fill((0, 200, 0, 128),           special_flags=p.BLEND_RGBA_ADD)
-    #image = image_normal  # The currently selected image.
-    #once = 1
-  #for event in p.event.get():
-    #if event.type == p.MOUSEBUTTONDOWN:
-            #image = image_bright  # Swap the image.
-            #timer = .5  # 0.5 seconds.
-
-    #timer -= dt
-    #if timer <= 0:
-        #image = image_normal  # Set the image back to the normal version.
-        #timer = 0
-
-    #ds.blit(image, (x, y))
-    #p.display.flip()
-    #dt = clock.tick(60) / 100

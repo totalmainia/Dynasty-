@@ -1,6 +1,6 @@
 import pygame as p
 import random
-import sta as s
+import sta
 level=1
 gxp=0
 xpn=10
@@ -13,18 +13,18 @@ def levelcalc(xpgained):
   if gxp >= xpn:
     level +=1
     gxp = 0
-    xpn *= 1.2*(random.randrange(1,2))
+    xpn *= 1.5
     asp+=level
     tsp+=asp
-    s.mcstats[0]+=(random.randrange(1,2))
-    s.mcstats[1]+=(random.randrange(1,2))
-    health=s.mcstats[2]+(random.randrange(1,3))
-    s.mc.Hp += health-s.mcstats[2]
-    s.mcstats[2]=health
-    s.mc.maxHp=health
+    sta.mcstats[0]+=(random.randrange(1,4))
+    sta.mcstats[1]+=(random.randrange(1,4))
+    health=sta.mcstats[2]+(random.randrange(1,4))
+    sta.mc.Hp += health-sta.mcstats[2]
+    sta.mcstats[2]=health
+    sta.mc.maxHp=health
     
 def gainedxp(enemy):
-  max= s.Enemystats[enemy][0]+ s.Enemystats[enemy][1]+ s.Enemystats[enemy][2]
+  max= sta.Enemystats[enemy][0]+ sta.Enemystats[enemy][1]+ sta.Enemystats[enemy][2]
   if max>6:
     min =1
   elif 6<=max<=30:
