@@ -1,8 +1,9 @@
-    #net dmg = attack dmg - def × 0.5
+
+#net dmg = attack dmg - def × 0.5
 #a,b = b,a
 #array[0][1],array[1][1] = arrray[1][1],array[0][1]
 import pygame as p
-import os, random, json, sta, im, In, Xp, battle, text, s
+import os, json, sta, im, In, Xp,text, s,battle,random
 texttracker = 0
 textamount = 0
 direction = 1
@@ -14,7 +15,7 @@ collideD = False
 room = 0
 password=''
 clock = p. time.Clock()
-Trash = p.image.load('trash-2.svg')
+Trash = p.image.load('icons/trash-2.svg')
 Trash_rect1= Trash.get_rect()
 Trash_rect1.center = (400,50)
 Trash_rect2= Trash.get_rect()
@@ -132,7 +133,8 @@ en=sta.Enemy()
 def savegame():
   global savefile,savedata
   In.checkslot()
-  savedata=[x,y,direction,Xp.level,Xp.gxp,Xp.xpn,sta.mcstats,In.slotItem,ahhhhhhhh,sta.mc.Hp,var,room]
+  savedata=[x,y,direction,sta.mc.level,Xp.gxp,Xp.xpn,sta.mcstats,In.slotItem,ahhhhhhhh,sta.mc.Hp,var,room,sta.pm1.level,Xp.pm1gxp,Xp.pm1xpn,sta.pm1stats,In.pm1slotitem,In.pm2slotitem,In.playerslotitem,sta.pm2.level,Xp.pm2gxp,Xp.pm2xpn,sta.pm2stats,sta.pm1.Hp,sta.pm2.Hp,sta.pm1.maxHp,sta.pm2.maxHp,sta.mc.clas]
+  print(savedata[27])
   if savefile == 1:
     with open('SaveFiles/Savefile1.txt','w') as saved:
       json.dump(savedata,saved)
@@ -152,6 +154,9 @@ begin=False
 Startscreen=True
 out = [0]
 once2=0
+playerminiy=20
+pm1miniy=20
+pm2miniy=20
 def textboxcreate():
   global textbox,itemtext,texttracker,textamount,out,once2
   textamount = len(out)
@@ -399,6 +404,20 @@ rect1 = p.draw.rect(s.ds, color, p.Rect(x, y-50, 500, 100))
 wall2 = p.draw.rect(s.ds, color, p.Rect(x-100, y,100, 1000))
 wall3 = p.draw.rect(s.ds, color, p.Rect(x, y+500,1000, 100))
 wall4 =p.draw.rect(s.ds, color, p.Rect(x+500, y,100, 1000))
+de=1
+onceinv=0
+forscor = 0
+wcw = 150
+wcx = 10
+rcw = 150
+rcx = 175
+rcy = 10
+mcw = 150
+mcx = 340
+mcy = 10
+numtes = 0
+classonce = 0
+yesno= 0
 while r:
   #[x,y,image,level,gxp,xpn,stats,inv,enemies]
     if once== 0:
@@ -423,15 +442,156 @@ while r:
       ahhhhhhhh= savedata[8]
       sta.mc.Hp=savedata[9]
       var=savedata[10]
-      sta.mc.defense = sta.mcstats[0]+sta.itemstats[In.slotitemid[In.inv[8]]][0] +sta.itemstats[In.slotitemid[In.inv[9]]][0]
-      sta.mc.attack = sta.mcstats[1]+sta.itemstats[In.slotitemid[In.inv[8]]][1] +sta.itemstats[In.slotitemid[In.inv[9]]][1]
-      sta.mc.maxHp = sta.mcstats[2]+sta.itemstats[In.slotitemid[In.inv[8]]][2] +sta.itemstats[In.slotitemid[In.inv[9]]][2]
-      sta.mc.mana = sta.mcstats[3]+sta.itemstats[In.slotitemid[In.inv[8]]][3] +sta.itemstats[In.slotitemid[In.inv[9]]][3]
-      sta.mc.luck = sta.mcstats[4]+sta.itemstats[In.slotitemid[In.inv[8]]][3] +sta.itemstats[In.slotitemid[In.inv[9]]][3]
+      sta.mc.defense = sta.mcstats[0]+sta.itemstats[In.slotitemid[In.playerinv[0]]][0] +sta.itemstats[In.slotitemid[In.playerinv[1]]][0]
+      sta.mc.attack = sta.mcstats[1]+sta.itemstats[In.slotitemid[In.playerinv[0]]][1] +sta.itemstats[In.slotitemid[In.playerinv[1]]][1]
+      sta.mc.maxHp = sta.mcstats[2]+sta.itemstats[In.slotitemid[In.playerinv[0]]][2] +sta.itemstats[In.slotitemid[In.playerinv[1]]][2]
+      sta.mc.mana = sta.mcstats[3]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
+      sta.mc.luck = sta.mcstats[4]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
       room = savedata[11]
+      sta.pm1.level = savedata[12]
+      Xp.pm1gxp = savedata[13]
+      Xp.pm1xpn = savedata[14]
+      sta.pm1stats =savedata[15]
+      yesxy=0
+      while yesxy<2:
+        In.pm1inv[yesxy] = In.itemid[savedata[16][yesxy]]
+        yesxy+=1
+      yesxy=0
+      while yesxy<2:
+        In.pm2inv[yesxy] = In.itemid[savedata[17][yesxy]]
+        yesxy+=1
+      yesxy=0
+      while yesxy<2:
+        In.playerinv[yesxy] = In.itemid[savedata[18][yesxy]]
+        yesxy+=1
+      sta.pm2.level = savedata[19]
+      Xp.pm2gxp = savedata[20]
+      Xp.pm2xpn = savedata[21]
+      sta.pm2stats = savedata[22]
+      sta.pm1.Hp = savedata[23]
+      sta.pm2.Hp = savedata[24]
+      sta.pm1.maxHp = savedata[25]
+      sta.pm2.maxHp = savedata[26]
+      sta.mc.clas = savedata[27]
+      if not sta.mc.clas == None:
+        classonce = 1
       once = 1
     mx,my = p.mouse.get_pos()
     clock.tick(60)
+    while sta.mc.clas == None:
+      for event in p.event.get():
+        wclass = p.transform.scale(im.stawarrior,(wcw,wcw))
+        rclass = p.transform.scale(im.staranger,(rcw,rcw))
+        mclass = p.transform.scale(im.stamage,(mcw,mcw))
+        mx,my = p.mouse.get_pos()
+        clock.tick(60)
+        s.ds.fill(white)
+        wclasss = s.ds.blit(wclass,(wcx,wcx))
+        if collision(10,10,mx,my,150) and yesno == 0:
+          wcw = 170
+          wcx = 0
+          itemtext = ('A good attack and high health class that can not use magic')
+          textbox = True
+        elif not wclasss.collidepoint((mx,my)) and yesno == 0:
+          wcw =150
+          wcx = 10
+        rclasss = s.ds.blit(rclass,(rcx,rcy))
+        if collision(175,10,mx,my,150) and yesno == 0:
+          rcw = 170
+          rcx = 165
+          rcy = 0
+          itemtext = ('A well rounded class that can use magic and melee')
+          textbox = True
+        elif not rclasss.collidepoint((mx,my)) and yesno == 0:
+          rcw =150
+          rcx =175
+          rcy = 10
+        mclasss = s.ds.blit(mclass,(mcx,mcy))
+        if collision(340,10,mx,my,150) and yesno == 0:
+          mcw = 170
+          mcx = 330
+          mcy = 0
+          itemtext = ('A very magic based class that can not use melee weapons')
+          textbox = True
+        elif not mclasss.collidepoint((mx,my)) and yesno == 0:
+          mcw =150
+          mcx =340
+          mcy = 10
+        if not wclasss.collidepoint((mx,my)) and not rclasss.collidepoint((mx,my)) and not mclasss.collidepoint((mx,my)) and yesno ==0:
+          textbox = False
+        textboxcreate()
+        if mouseover(wclasss) or yesno == 1:
+          p.draw.rect(s.ds, white, p.Rect(133, 150, 234, 70))
+          s.ds.blit(text.textsh,text.textshRect)
+          s.ds.blit(text.texts2,text.texts2Rect)
+          s.ds.blit(text.texts3,text.texts3Rect)
+          yesno = 1
+        if mouseover(rclasss) or yesno == 2:
+          p.draw.rect(s.ds, white, p.Rect(133, 150, 234, 70))
+          s.ds.blit(text.textsh,text.textshRect)
+          s.ds.blit(text.texts2,text.texts2Rect)
+          s.ds.blit(text.texts3,text.texts3Rect)
+          yesno = 2
+        if mouseover(mclasss) or yesno == 3:
+          p.draw.rect(s.ds, white, p.Rect(133, 150, 234, 70))
+          s.ds.blit(text.textsh,text.textshRect)
+          s.ds.blit(text.texts2,text.texts2Rect)
+          s.ds.blit(text.texts3,text.texts3Rect)
+          yesno = 3
+        if mouseover(text.texts2Rect) and not yesno == 0:
+          sta.mc.clas = yesno
+          textbox = False
+        elif mouseover(text.texts3Rect) and not yesno == 0:
+          yesno = 0
+            
+        s.screen.blit(s.ds,(0,0))
+        p.display.flip()
+    if classonce == 0:
+      if sta.mc.clas == 1:
+        sta.mcstats[0] = 2
+        sta.mcstats[1] = 5
+        sta.mcstats[2] = 15
+        sta.mcstats[3] = 0
+        sta.mcstats[4] = (random.randrange(1,15))
+        Xp.pam = 3
+        Xp.pdm = 4
+        Xp.phm = 5
+        Xp.pmm = 0
+        In.playerinv[0] = im.stick
+        In.playerinv[1] = im.Empty
+        In.playerinv[2] = im.Empty
+      if sta.mc.clas == 2:
+        sta.mcstats[0] = 1
+        sta.mcstats[1] = 3
+        sta.mcstats[2] = 10
+        sta.mcstats[3] = 10
+        sta.mcstats[4] = (random.randrange(1,15))
+        Xp.pam = 4
+        Xp.pdm = 4
+        Xp.phm = 4
+        Xp.pmm = 4
+        In.playerinv[0] = im.stick
+        In.playerinv[1] = im.Empty
+        In.playerinv[2] = im.Empty
+      if sta.mc.clas == 3:
+        sta.mcstats[0] = 0
+        sta.mcstats[1] = 0
+        sta.mcstats[2] = 5
+        sta.mcstats[3] = 20
+        sta.mcstats[4] = (random.randrange(1,15))
+        Xp.pam = 0
+        Xp.pdm = 2
+        Xp.phm = 2
+        Xp.pmm = 10
+        In.playerinv[0] = im.stick
+        In.playerinv[1] = im.Empty
+        In.playerinv[2] = im.Empty
+      sta.mc.defense = sta.mcstats[0]+sta.itemstats[In.slotitemid[In.playerinv[0]]][0] +sta.itemstats[In.slotitemid[In.playerinv[1]]][0]
+      sta.mc.attack = sta.mcstats[1]+sta.itemstats[In.slotitemid[In.playerinv[0]]][1] +sta.itemstats[In.slotitemid[In.playerinv[1]]][1]
+      sta.mc.maxHp = sta.mcstats[2]+sta.itemstats[In.slotitemid[In.playerinv[0]]][2] +sta.itemstats[In.slotitemid[In.playerinv[1]]][2]
+      sta.mc.mana = sta.mcstats[3]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
+      sta.mc.luck = sta.mcstats[4]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
+      
     for event in p.event.get():
         if event.type == p.KEYUP:
             if event.key == p.K_e:
@@ -440,6 +600,18 @@ while r:
                     event.key = p.K_p
                 elif event.key == p.K_e and sta.S==1:
                     sta.S = 0
+                    if In.currentinv == 1:
+                      In.playerinv[0]=In.inv[8]
+                      In.playerinv[1]=In.inv[9]
+                      In.playerinv[2]=In.inv[10]
+                    elif In.currentinv == 2:
+                      In.pm1inv[0]=In.inv[8]
+                      In.pm1inv[1]=In.inv[9]
+                      In.pm1inv[2]=In.inv[10]
+                    elif In.currentinv == 3:
+                      In.pm2inv[0]=In.inv[8]
+                      In.pm2inv[1]=In.inv[9]
+                      In.pm2inv[2]=In.inv[10]
                     event.key = p.K_p
             elif event.key == p.K_ESCAPE:
                 if sta.S == 0:
@@ -456,6 +628,13 @@ while r:
                 elif sta.S == 2 and P == 2:
                     sta.S = 1
                     event.key = p.K_p
+                elif sta.S == 5:
+                    if forscor == 0:
+                      sta.S = 2
+                    else:
+                      forscor = 0
+                    event.key = p.K_p
+                  
             if event.key == p.K_v:
                     savegame()
                     event.key = p.K_p
@@ -476,9 +655,133 @@ while r:
                   textbox = False
                   out = [0] 
               event.key = p.K_p 
+            if sta.S==1 and event.key ==p.K_RIGHT:
+              if In.currentinv == 1:
+                In.playerinv[0]=In.inv[8]
+                In.playerinv[1]=In.inv[9]
+                In.playerinv[2]=In.inv[10]
+              elif In.currentinv == 2:
+                In.pm1inv[0]=In.inv[8]
+                In.pm1inv[1]=In.inv[9]
+                In.pm1inv[2]=In.inv[10]
+              elif In.currentinv == 3:
+                In.pm2inv[0]=In.inv[8]
+                In.pm2inv[1]=In.inv[9]
+                In.pm2inv[2]=In.inv[10]
+              onceinv=0
+              In.currentinv+=1
+              de=1
+              if In.currentinv >sta.partyamount:
+                In.currentinv=1
+            if sta.S==1 and event.key ==p.K_LEFT:
+              if In.currentinv == 1:
+                In.playerinv[0]=In.inv[8]
+                In.playerinv[1]=In.inv[9]
+                In.playerinv[2]=In.inv[10]
+              elif In.currentinv == 2:
+                In.pm1inv[0]=In.inv[8]
+                In.pm1inv[1]=In.inv[9]
+                In.pm1inv[2]=In.inv[10]
+              elif In.currentinv == 3:
+                In.pm2inv[0]=In.inv[8]
+                In.pm2inv[1]=In.inv[9]
+                In.pm2inv[2]=In.inv[10]
+              onceinv=0
+              In.currentinv-=1
+              de=1
+              if In.currentinv <=0:
+                In.currentinv=sta.partyamount
+            if sta.S==21 and battle.battleselec==0 and event.key == p.K_RIGHT:
+              battle.oncet1=0
+              battle.oncet2=0
+              battle.oncet3=0
+              battle.onceanim=0
+              battle.selectorover+=1
+              if battle.selectorover>sta.partyamount:
+                battle.selectorover=1
+            if sta.S==21 and battle.battleselec==0 and event.key == p.K_LEFT:
+              battle.oncet1=0
+              battle.oncet2=0
+              battle.oncet3=0
+              battle.onceanim=0
+              battle.selectorover-=1
+              if battle.selectorover<=0:
+                battle.selectorover=sta.partyamount
+            if sta.S==21 and battle.battleselec==0 and event.key == p.K_RETURN:
+              if battle.selectorover == 1 and not sta.mc.hasattacked:
+                battle.battleselec=1
+              elif battle.selectorover == 2 and not sta.pm1.hasattacked:
+                battle.battleselec=1
+              elif battle.selectorover == 3 and not sta.pm2.hasattacked:
+                battle.battleselec=1
+              event.key = p.K_p
+            if sta.S==21 and not battle.battleselec ==0 and event.key == p.K_RIGHT:
+              battle.battleselec +=1
+              battle.battleonce=0
+              if battle.battleselec>4:
+                battle.battleselec = 1
+            if sta.S==21 and not battle.battleselec ==0 and event.key == p.K_LEFT:
+              battle.battleselec -=1
+              battle.battleonce=0
+              if battle.battleselec<=0:
+                battle.battleselec = 4
+            if sta.S==21 and not battle.battleselec==0 and event.key == p.K_RETURN:
+              if battle.battleselec==1:
+                if battle.selectorover == 1 and not sta.mc.hasattacked:
+                  battle.attacktest = True
+                if battle.selectorover == 2 and not sta.pm1.hasattacked:
+                  battle.attacktest = True
+                if battle.selectorover == 3 and not sta.pm2.hasattacked:
+                  battle.attacktest = True
+                battle.battleselec=0
+              if battle.battleselec==2:
+                if battle.selectorover == 1 and not sta.mc.hasattacked:
+                  sta.mc.defend = True
+                  sta.mc.hasattacked = True
+                elif battle.selectorover == 2 and not sta.pm1.hasattacked:
+                  sta.pm1.defend = True
+                  sta.pm1.hasattacked = True
+                elif battle.selectorover == 3 and not sta.pm2.hasattacked:
+                  sta.pm2.defend = True
+                  sta.pm2.hasattacked = True
+                battle.currentturn+=1
+                battle.battleselec = 0
+            if sta.S==21 and battle.attacktest and event.key == p.K_ESCAPE:
+              battle.attacktest = False
+            if sta.S==21 and battle.attacktest and battle.enemieshp[0] >0  and event.key == p.K_1:
+              battle.attacktest = False
+              battle.enemyattacking =1
+              if battle.pmattacking==1:
+                battle.playerattack()
+              if battle.pmattacking==2:
+                battle.p1attack()
+              if battle.pmattacking==3:
+                battle.p2attack()
+            if sta.S==21 and battle.attacktest and battle.enemieshp[1] >0  and event.key == p.K_2:
+              battle.attacktest = False
+              battle.enemyattacking =2
+              if battle.pmattacking==1:
+                battle.playerattack()
+              if battle.pmattacking==2:
+                battle.p1attack()
+              if battle.pmattacking==3:
+                battle.p2attack()
+            if sta.S==21 and battle.attacktest and battle.enemieshp[2] >0  and event.key == p.K_3:
+              battle.attacktest = False
+              battle.enemyattacking =3
+              if battle.pmattacking==1:
+                battle.playerattack()
+              if battle.pmattacking==2:
+                battle.p1attack()
+              if battle.pmattacking==3:
+                battle.p2attack()
+          
     if mouseover(text.textRect3) and sta.S == 2:
       sta.S=3
       ahh = 1
+    if mouseover(text.textRect2) and sta.S == 2:
+      sta.S=5
+      ahh = 2
     if trrr==0:
       if  mouseover(text.textRect4) and ahh==1:
         sta.S=2
@@ -511,8 +814,9 @@ while r:
           ENEMY(1,1,sta.enemy[0],None,None,200,400,50,50)
           ENEMY(2,1,sta.enemy[0],None,None,250,490,50,50)
           ENEMY(3,1,sta.enemy[0],None,None,20,490,50,50)
-          ENEMY(4,1,sta.enemy[0],None,None,20,50,50,50)
+          ENEMY(4,2,sta.enemy[0],sta.enemy[2],None,20,50,50,50)
           ENEMY(5,2,sta.enemy[0],sta.enemy[0],None,-290,120,50,50)
+          ENEMY(6,3,sta.enemy[0],sta.enemy[1],sta.enemy[1],900,-200,50,50)
           interitem(im.Rei,900,150,100,120,True,'yo, how you doing?')
           door=s.ds.blit(p.transform.scale(im.door,(50,75)),(x+150,y-25))
           if collide(door):
@@ -529,7 +833,7 @@ while r:
           interitem(im.sign,400,50,50,50,True,'this is a sign, how bout that, a sign here, who couldve      guessed, its almost like it  was put here as a way to test how the textbox in this game  was to work, nah who would     be dumb enough to do that?')
           item(1,In.itemid[2],50,100,50,50)
           item(2,In.itemid[3],50,150,50,50)
-          ENEMY(6,3,sta.enemy[0],sta.enemy[0],sta.enemy[0],100,200,50,50)
+          ENEMY(7,3,sta.enemy[0],sta.enemy[0],sta.enemy[0],100,200,50,50)
           if collide(door):
             room = 0
             y+=350
@@ -537,7 +841,7 @@ while r:
         s.ds.blit(sta.mc.image, (sta.mc.x, sta.mc.y))
         im.P1 = p.transform.scale(im.g5, (im.wi, 100))
         sta.mc.image = im.P1
-        textlv2 = text.font2.render('Lv:' + str(Xp.level),True,black,white)
+        textlv2 = text.font2.render('Lv:' + str(sta.mc.level),True,black,white)
         textRectlv2 = textlv2.get_rect()
         textRectlv2.topright = (500,0)
         s.ds.blit(textlv2, textRectlv2)
@@ -625,7 +929,49 @@ while r:
         s.ds.blit(ESlotA,(50,0))
         s.ds.blit(ESlotW,(150,0))
         s.ds.blit(ESlotP,(250,0))
-        s.ds.blit(textlv2, textRectlv2)
+        playermini =  p.transform.scale(sta.mc.mini,(75,80))
+        pm1mini = p.transform.scale(sta.pm1.mini,(75,80))
+        pm2mini = p.transform.scale(sta.pm2.mini,(75,80))
+        if In.currentinv ==1:
+          if de <=20:
+            if de<10:
+              playerminiy-=1
+            elif de<20:
+              playerminiy+=1
+            de+=1
+          s.ds.blit(playermini,(340,playerminiy))
+          if onceinv==0:
+            In.inv[8]=In.playerinv[0]
+            In.inv[9]=In.playerinv[1]
+            In.inv[10]=In.playerinv[2]
+            onceinv=1
+        elif In.currentinv ==2:
+          if de <=20:
+            if de<10:
+              pm1miniy-=1
+            elif de<20:
+              pm1miniy+=1
+            de+=1
+          s.ds.blit(pm1mini,(340,pm1miniy))
+          if onceinv==0:
+            In.inv[8]=In.pm1inv[0]
+            In.inv[9]=In.pm1inv[1]
+            In.inv[10]=In.pm1inv[2]
+            onceinv=1
+        elif In.currentinv ==3:
+          if de <=20:
+            if de<10:
+              pm2miniy-=1
+            elif de<20:
+              pm2miniy+=1
+            de+=1
+          s.ds.blit(pm2mini,(340,pm2miniy))
+          if onceinv==0:
+            In.inv[8]=In.pm2inv[0]
+            In.inv[9]=In.pm2inv[1]
+            In.inv[10]=In.pm2inv[2]
+            onceinv=1
+        #s.ds.blit(textlv2, textRectlv2)
       
         In.slotselect()
 #menu screen
@@ -639,6 +985,23 @@ while r:
         s.ds.fill(white)
         s.ds.blit(text.text5, text.textRect5)
         s.ds.blit(text.text4, text.textRect4)
+    elif sta.S == 5:
+        s.ds.fill(white)
+        if forscor == 0:
+          player = s.ds.blit(sta.mcmini,(50,50))
+          if mouseover(player):
+            forscor = 1
+          if sta.partyamount >=2:
+            pm1 = s.ds.blit(sta.pm1mini,(50,100))
+            if mouseover(pm1):
+              forscor = 2
+          if sta.partyamount == 3:
+            pm2 = s.ds.blit(sta.pm2mini,(50,150))
+            if mouseover(pm2):
+              forscor = 3
+        if forscor == 1:
+          mcmini = p.transform.scale(sta.mc.mini,(75,100))
+          s.ds.blit(mcmini,(0,0))
     elif sta.S == 21:
       battle.battlesequence()
     elif sta.S == None:

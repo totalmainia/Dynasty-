@@ -2,10 +2,10 @@ import pygame as p
 import s
 clock = p.time.Clock()
 wi = 87
-temp = p.image.load('temp.png')
-ES = p.image.load("box.png")
-Empty= p.image.load('box.png')
-selector= p.image.load('selector.png')
+temp = p.image.load('enemies/temp.png')
+ES = p.image.load("misc/box.png")
+Empty= p.image.load('misc/box.png')
+selector= p.image.load('misc/selector.png')
 Stick = p.image.load('Items/stick.png')
 Wsword = p.image.load('Items/woodsword.png')
 Isword = p.image.load('Items/ironsword.png')
@@ -28,6 +28,7 @@ Ra = [
 ]
 sign = p.image.load('Items/sign.png')
 Rei = p.image.load('NPC/ReiA.png')
+darkP1 = p.image.load('I/battledark.png')
 battleP1 = p.image.load('I/battle.png')
 door = p.image.load('apy/DOOR.png')
 g5 = Di
@@ -39,9 +40,15 @@ def changecolor(image,color,x,y):
   s.ds.blit(image,(x,y))
 once = 0
 originalimage = 0
-dt = 0
 timer = 0
 image_bright =0
 
 party1 = battleP1
 party2 = battleP1
+blinkp = p.image.load('I/blinkp.png')
+enemselector = p.image.load('misc/enemselector.png')
+turtle = p.image.load('enemies/turt.png')
+rat = p.image.load('misc/rat.png')
+stawarrior = p.image.load('icons/winged-sword.png')
+stamage = p.image.load('icons/winged-scepter.png')
+staranger = p.image.load('icons/winged-arrow.png')

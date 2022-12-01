@@ -15,7 +15,11 @@ text = font.render('Pause', True, color, white)
 text6 = font2.render('Inventory full', True, color, white)
 textRect = text.get_rect()
 textRect.center = (250, 50)
-inv=[im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Stick,im.Empty,im.Empty]
+inv=[im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty]
+playerinv=[im.Stick,im.Empty,im.Empty]
+pm1inv=[im.Wsword,im.Empty,im.Empty]
+pm2inv=[im.Wsword,im.Empty,im.Empty]
+currentinv=1
 Slot1=0
 Slot2=0
 Slot3=0
@@ -36,6 +40,9 @@ itemid = {
   2:im.Wsword,
   3:im.Isword,
 }
+playerslotitem = [slotitemid[playerinv[0]],slotitemid[playerinv[1]],slotitemid[playerinv[2]]]
+pm1slotitem = [slotitemid[pm1inv[0]],slotitemid[pm1inv[1]],slotitemid[pm1inv[2]]]
+pm2slotitem = [slotitemid[pm2inv[0]],slotitemid[pm2inv[1]],slotitemid[pm2inv[2]]]
 def collision(x,y,x2,y2,w):
     if x + w > x2 > x and y+w > y2 > y:
         return True
@@ -76,7 +83,10 @@ color = black
 clock = p.time.Clock()
 direction = 1
 def checkslot():
-  global slotItem
+  global slotItem,playerslotitem,pm1slotitem,pm2slotitem
+  playerslotitem = [slotitemid[playerinv[0]],slotitemid[playerinv[1]],slotitemid[playerinv[2]]]
+  pm1slotitem = [slotitemid[pm1inv[0]],slotitemid[pm1inv[1]],slotitemid[pm1inv[2]]]
+  pm2slotitem = [slotitemid[pm2inv[0]],slotitemid[pm2inv[1]],slotitemid[pm2inv[2]]]
   slotItem = [slotitemid[inv[0]],slotitemid[inv[1]],slotitemid[inv[2]],slotitemid[inv[3]],slotitemid[inv[4]],slotitemid[inv[5]],slotitemid[inv[6]],slotitemid[inv[7]],slotitemid[inv[8]],slotitemid[inv[9]],slotitemid[inv[10]]]
 def slotselect():
   global SelectedSlot, t,array
