@@ -15,6 +15,8 @@ text = font.render('Pause', True, color, white)
 text6 = font2.render('Inventory full', True, color, white)
 textRect = text.get_rect()
 textRect.center = (250, 50)
+eqspells = [None,None,None,None]
+learnedspells = [3,5]
 inv=[im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty,im.Empty]
 playerinv=[im.Stick,im.Empty,im.Empty]
 pm1inv=[im.Wsword,im.Empty,im.Empty]
@@ -88,6 +90,9 @@ def checkslot():
   pm1slotitem = [slotitemid[pm1inv[0]],slotitemid[pm1inv[1]],slotitemid[pm1inv[2]]]
   pm2slotitem = [slotitemid[pm2inv[0]],slotitemid[pm2inv[1]],slotitemid[pm2inv[2]]]
   slotItem = [slotitemid[inv[0]],slotitemid[inv[1]],slotitemid[inv[2]],slotitemid[inv[3]],slotitemid[inv[4]],slotitemid[inv[5]],slotitemid[inv[6]],slotitemid[inv[7]],slotitemid[inv[8]],slotitemid[inv[9]],slotitemid[inv[10]]]
+def spellselect():
+  mx,my = p.mouse.get_pos()
+  test = p.mouse.get_pressed()[0]
 def slotselect():
   global SelectedSlot, t,array
   mx,my=p.mouse.get_pos()

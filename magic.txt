@@ -4,8 +4,20 @@ Arcane armor:
 Fireball:
   Splash damage, medium damage, fair mana usage
 
+Hell-fire: 
+  Late game fireball
+
 summon clam:
   Clam fights for you, takes enemy aggro, not much health but plenty of defence, I will take no questions.
+
+summon crab:
+  clam but with attack
+
+clamity:
+  big clam
+
+clawsus:
+  big crab
 
 Lightning: 
   Single target, lots of damage, fair mana usage
@@ -13,3 +25,11 @@ Lightning:
 heal mist:
   heals all of team, small HP gain
 
+heal beam:
+  heals one teammate other than self, half hp gain
+
+Gun: 
+ I cast gun, now prepare to meet god!
+
+Blizzard:
+  Minor damage, Stat decreases overall for all enemies

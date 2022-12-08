@@ -24,11 +24,12 @@ Trash_rect3= Trash.get_rect()
 Trash_rect3.center = (400,190)
 Trash_rect4= Trash.get_rect()
 Trash_rect4.center = (400,260)
-white = (255, 255, 255,255)
+white = (255, 255,255,255)
 green = (0,255,0,255)
 red = (255,0,0,255)
 grey = (10,10,10,255)
 black = (0,0,0,255)
+black_faded = (0,0,0,128)
 color2 = (255,255.255,255)
 color = black
 savefile=0
@@ -418,6 +419,15 @@ mcy = 10
 numtes = 0
 classonce = 0
 yesno= 0
+plen = 230
+oncest = 0
+oncest1 = 0
+oncest2 = 0
+spllist = False
+minspell = 0
+spellistmonce  = 0
+testmouse = False
+spellover = 0
 while r:
   #[x,y,image,level,gxp,xpn,stats,inv,enemies]
     if once== 0:
@@ -442,11 +452,6 @@ while r:
       ahhhhhhhh= savedata[8]
       sta.mc.Hp=savedata[9]
       var=savedata[10]
-      sta.mc.defense = sta.mcstats[0]+sta.itemstats[In.slotitemid[In.playerinv[0]]][0] +sta.itemstats[In.slotitemid[In.playerinv[1]]][0]
-      sta.mc.attack = sta.mcstats[1]+sta.itemstats[In.slotitemid[In.playerinv[0]]][1] +sta.itemstats[In.slotitemid[In.playerinv[1]]][1]
-      sta.mc.maxHp = sta.mcstats[2]+sta.itemstats[In.slotitemid[In.playerinv[0]]][2] +sta.itemstats[In.slotitemid[In.playerinv[1]]][2]
-      sta.mc.mana = sta.mcstats[3]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
-      sta.mc.luck = sta.mcstats[4]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
       room = savedata[11]
       sta.pm1.level = savedata[12]
       Xp.pm1gxp = savedata[13]
@@ -473,6 +478,11 @@ while r:
       sta.pm1.maxHp = savedata[25]
       sta.pm2.maxHp = savedata[26]
       sta.mc.clas = savedata[27]
+      sta.mc.defense = sta.mcstats[0]+sta.itemstats[In.slotitemid[In.playerinv[0]]][0] +sta.itemstats[In.slotitemid[In.playerinv[1]]][0]
+      sta.mc.attack = sta.mcstats[1]+sta.itemstats[In.slotitemid[In.playerinv[0]]][1] +sta.itemstats[In.slotitemid[In.playerinv[1]]][1]
+      sta.mc.maxHp = sta.mcstats[2]+sta.itemstats[In.slotitemid[In.playerinv[0]]][2] +sta.itemstats[In.slotitemid[In.playerinv[1]]][2]
+      sta.mc.mana = sta.mcstats[3]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
+      sta.mc.luck = sta.mcstats[4]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
       if not sta.mc.clas == None:
         classonce = 1
       once = 1
@@ -521,19 +531,19 @@ while r:
           textbox = False
         textboxcreate()
         if mouseover(wclasss) or yesno == 1:
-          p.draw.rect(s.ds, white, p.Rect(133, 150, 234, 70))
+          p.draw.rect(s.ds, white, p.Rect(133, 130, 234, 90))
           s.ds.blit(text.textsh,text.textshRect)
           s.ds.blit(text.texts2,text.texts2Rect)
           s.ds.blit(text.texts3,text.texts3Rect)
           yesno = 1
         if mouseover(rclasss) or yesno == 2:
-          p.draw.rect(s.ds, white, p.Rect(133, 150, 234, 70))
+          p.draw.rect(s.ds, white, p.Rect(133, 130, 234, 90))
           s.ds.blit(text.textsh,text.textshRect)
           s.ds.blit(text.texts2,text.texts2Rect)
           s.ds.blit(text.texts3,text.texts3Rect)
           yesno = 2
         if mouseover(mclasss) or yesno == 3:
-          p.draw.rect(s.ds, white, p.Rect(133, 150, 234, 70))
+          p.draw.rect(s.ds, white, p.Rect(133, 130, 234, 90))
           s.ds.blit(text.textsh,text.textshRect)
           s.ds.blit(text.texts2,text.texts2Rect)
           s.ds.blit(text.texts3,text.texts3Rect)
@@ -551,13 +561,17 @@ while r:
         sta.mcstats[0] = 2
         sta.mcstats[1] = 5
         sta.mcstats[2] = 15
-        sta.mcstats[3] = 0
+        sta.mcstats[3] = 10
         sta.mcstats[4] = (random.randrange(1,15))
         Xp.pam = 3
-        Xp.pdm = 4
+        Xp.pdm = 2
         Xp.phm = 5
-        Xp.pmm = 0
-        In.playerinv[0] = im.stick
+        Xp.pmm = 5
+        Xp.pStr = 10
+        Xp.pDex = 10
+        Xp.pCon = 9
+        Xp.pInt = 7
+        In.playerinv[0] = im.Stick
         In.playerinv[1] = im.Empty
         In.playerinv[2] = im.Empty
       if sta.mc.clas == 2:
@@ -566,11 +580,15 @@ while r:
         sta.mcstats[2] = 10
         sta.mcstats[3] = 10
         sta.mcstats[4] = (random.randrange(1,15))
-        Xp.pam = 4
-        Xp.pdm = 4
+        Xp.pam = 3
+        Xp.pdm = 3
         Xp.phm = 4
-        Xp.pmm = 4
-        In.playerinv[0] = im.stick
+        Xp.pmm = 5
+        Xp.pStr = 9
+        Xp.pDex = 10
+        Xp.pCon = 10
+        Xp.pInt = 7
+        In.playerinv[0] = im.Stick
         In.playerinv[1] = im.Empty
         In.playerinv[2] = im.Empty
       if sta.mc.clas == 3:
@@ -581,9 +599,13 @@ while r:
         sta.mcstats[4] = (random.randrange(1,15))
         Xp.pam = 0
         Xp.pdm = 2
-        Xp.phm = 2
+        Xp.phm = 3
         Xp.pmm = 10
-        In.playerinv[0] = im.stick
+        Xp.pStr = 7
+        Xp.pDex = 9
+        Xp.pCon = 10
+        Xp.pInt = 10
+        In.playerinv[0] = im.Stick
         In.playerinv[1] = im.Empty
         In.playerinv[2] = im.Empty
       sta.mc.defense = sta.mcstats[0]+sta.itemstats[In.slotitemid[In.playerinv[0]]][0] +sta.itemstats[In.slotitemid[In.playerinv[1]]][0]
@@ -591,7 +613,8 @@ while r:
       sta.mc.maxHp = sta.mcstats[2]+sta.itemstats[In.slotitemid[In.playerinv[0]]][2] +sta.itemstats[In.slotitemid[In.playerinv[1]]][2]
       sta.mc.mana = sta.mcstats[3]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
       sta.mc.luck = sta.mcstats[4]+sta.itemstats[In.slotitemid[In.playerinv[0]]][3] +sta.itemstats[In.slotitemid[In.playerinv[1]]][3]
-      
+      sta.mc.Hp = sta.mc.maxHp
+      classonce=1
     for event in p.event.get():
         if event.type == p.KEYUP:
             if event.key == p.K_e:
@@ -599,6 +622,9 @@ while r:
                     sta.S = 1
                     event.key = p.K_p
                 elif event.key == p.K_e and sta.S==1:
+                  if spllist:
+                    spllist = False
+                  else:
                     sta.S = 0
                     if In.currentinv == 1:
                       In.playerinv[0]=In.inv[8]
@@ -612,7 +638,7 @@ while r:
                       In.pm2inv[0]=In.inv[8]
                       In.pm2inv[1]=In.inv[9]
                       In.pm2inv[2]=In.inv[10]
-                    event.key = p.K_p
+                  event.key = p.K_p
             elif event.key == p.K_ESCAPE:
                 if sta.S == 0:
                     sta.S = 2
@@ -655,7 +681,7 @@ while r:
                   textbox = False
                   out = [0] 
               event.key = p.K_p 
-            if sta.S==1 and event.key ==p.K_RIGHT:
+            if sta.S==1 and event.key ==p.K_RIGHT and not spllist:
               if In.currentinv == 1:
                 In.playerinv[0]=In.inv[8]
                 In.playerinv[1]=In.inv[9]
@@ -673,7 +699,7 @@ while r:
               de=1
               if In.currentinv >sta.partyamount:
                 In.currentinv=1
-            if sta.S==1 and event.key ==p.K_LEFT:
+            if sta.S==1 and event.key ==p.K_LEFT and not spllist:
               if In.currentinv == 1:
                 In.playerinv[0]=In.inv[8]
                 In.playerinv[1]=In.inv[9]
@@ -725,6 +751,22 @@ while r:
               battle.battleonce=0
               if battle.battleselec<=0:
                 battle.battleselec = 4
+            if sta.S==21 and not battle.battleselec ==0 and event.key == p.K_DOWN:
+              battle.battleselec +=2
+              battle.battleonce=0
+              if battle.battleselec>4:
+                if battle.battleselec == 6:
+                  battle.battleselec = 2
+                else:
+                  battle.battleselec = 1
+            if sta.S==21 and not battle.battleselec ==0 and event.key == p.K_UP:
+              battle.battleselec -=2
+              battle.battleonce=0
+              if battle.battleselec<=0:
+                if battle.battleselec == -1:
+                  battle.battleselec = 3
+                else:
+                  battle.battleselec = 4
             if sta.S==21 and not battle.battleselec==0 and event.key == p.K_RETURN:
               if battle.battleselec==1:
                 if battle.selectorover == 1 and not sta.mc.hasattacked:
@@ -734,7 +776,7 @@ while r:
                 if battle.selectorover == 3 and not sta.pm2.hasattacked:
                   battle.attacktest = True
                 battle.battleselec=0
-              if battle.battleselec==2:
+              elif battle.battleselec==2:
                 if battle.selectorover == 1 and not sta.mc.hasattacked:
                   sta.mc.defend = True
                   sta.mc.hasattacked = True
@@ -746,8 +788,19 @@ while r:
                   sta.pm2.hasattacked = True
                 battle.currentturn+=1
                 battle.battleselec = 0
-            if sta.S==21 and battle.attacktest and event.key == p.K_ESCAPE:
-              battle.attacktest = False
+              elif battle.battleselec ==3:
+                if battle.selectorover == 1 and not sta.mc.hasattacked:
+                  battle.magictest = True
+                if battle.selectorover == 2 and not sta.pm1.hasattacked:
+                  battle.magictest = True
+                if battle.selectorover == 3 and not sta.pm2.hasattacked:
+                  battle.magictest = True
+                battle.battleselec=0
+            if sta.S==21 and event.key == p.K_ESCAPE:
+              if battle.attacktest:
+                battle.attacktest = False
+              elif battle.magictest:
+                battle.magictest = False
             if sta.S==21 and battle.attacktest and battle.enemieshp[0] >0  and event.key == p.K_1:
               battle.attacktest = False
               battle.enemyattacking =1
@@ -782,12 +835,12 @@ while r:
     if mouseover(text.textRect2) and sta.S == 2:
       sta.S=5
       ahh = 2
-    if trrr==0:
+    if trrr==0 and forscor ==0:
       if  mouseover(text.textRect4) and ahh==1:
         sta.S=2
         ahh = 0
         trrr=1
-      elif mouseover(text.textRect4) and P==1:
+      elif mouseover(text.textRect4) and P==1 and not sta.S == 5:
         sta.S=0
         trrr=1
       elif mouseover(text.textRect4) and P==2:
@@ -892,6 +945,7 @@ while r:
                 direction = 1
 #inventory screen
     elif sta.S == 1:
+      if not spllist:
         Slot1 = p.transform.scale(In.inv[0], (50, 50))
         Slot2 = p.transform.scale(In.inv[1], (50, 50))
         Slot3 = p.transform.scale(In.inv[2], (50, 50))
@@ -939,6 +993,13 @@ while r:
             elif de<20:
               playerminiy+=1
             de+=1
+          if not sta.mc.clas == 1:
+            if collision(420,50,mx,my,40):
+              s.ds.blit(im.magop,im.magopR)
+            else:
+              s.ds.blit(im.magcl,im.magclR)
+            if mouseover(im.magopR):
+              spllist = True
           s.ds.blit(playermini,(340,playerminiy))
           if onceinv==0:
             In.inv[8]=In.playerinv[0]
@@ -971,9 +1032,111 @@ while r:
             In.inv[9]=In.pm2inv[1]
             In.inv[10]=In.pm2inv[2]
             onceinv=1
-        #s.ds.blit(textlv2, textRectlv2)
+            In.slotselect()
+      elif spllist:
+        equipsl = text.font.render('Equiped Spells:',True,black)
+        equipslR = equipsl.get_rect()
+        equipslR.topleft = (250,50)
+        slo1 = text.font2.render('Slot1:'+str(sta.spell[In.eqspells[0]]),True,black)
+        slo1R = slo1.get_rect()
+        slo1R.topleft = (250,100)
+        slo2 = text.font2.render('Slot2:'+str(sta.spell[In.eqspells[1]]),True,black)
+        slo2R = slo2.get_rect()
+        slo2R.topleft = (250,125)
+        slo3 = text.font2.render('Slot3:'+str(sta.spell[In.eqspells[2]]),True,black)
+        slo3R = slo3.get_rect()
+        slo3R.topleft = (250,150)
+        slo4 = text.font2.render('Slot4:'+str(sta.spell[In.eqspells[3]]),True,black)
+        slo4R = slo4.get_rect()
+        slo4R.topleft = (250,175)
+        s.ds.fill(white)
+        if len(In.learnedspells) >=minspell+1:
+          one = text.font2.render(str(minspell+1)+':'+str(sta.spell[In.learnedspells[minspell]]),True,black)
+          oneR = one.get_rect()
+          oneR.topleft = (5,40)
+          s.ds.blit(one,oneR)
+          if mouseover(oneR) and not testmouse:
+            testmouse = True
+            spellover = minspell
+        if len(In.learnedspells) >=minspell+2:
+          two = text.font2.render(str(minspell+2)+':'+str(sta.spell[In.learnedspells[minspell+1]]),True,black)
+          twoR = two.get_rect()
+          twoR.topleft = (5,65)
+          s.ds.blit(two,twoR)
+          if mouseover(twoR) and not testmouse:
+            testmouse = True
+            spellover = minspell+1
+        if len(In.learnedspells) >=minspell+3:
+          three = text.font2.render(str(minspell+3)+':'+str(sta.spell[In.learnedspells[minspell+2]]),True,black)
+          threeR = three.get_rect()
+          threeR.topleft = (5,90)
+          s.ds.blit(three,threeR)
+          if mouseover(threeR) and not testmouse:
+            testmouse = True
+            spellover = minspell+2
+        if len(In.learnedspells) >=minspell+4:
+          four = text.font2.render(str(minspell+4)+':'+str(sta.spell[In.learnedspells[minspell+3]]),True,black)
+          fourR = four.get_rect()
+          fourR.topleft = (5,115)
+          s.ds.blit(four,fourR)
+          if mouseover(fourR) and not testmouse:
+            testmouse = True
+            spellover = minspell+3
+        if len(In.learnedspells) >=minspell+5:
+          five = text.font2.render(str(minspell+5)+':'+str(sta.spell[In.learnedspells[minspell+4]]),True,black)
+          fiveR = five.get_rect()
+          fiveR.topleft = (5,140)
+          s.ds.blit(five,fiveR)
+          if mouseover(fiveR) and not testmouse:
+            testmouse = True
+            spellover = minspell+4
+        if len(In.learnedspells) >=minspell+6:
+          s.ds.blit(im.downs,im.upsR)
+          if mouseover(im.upsR) and spellistmonce == 0:
+            minspell +=5
+            spellistmonce = 1
+        if not minspell == 0:
+          s.ds.blit(im.ups,im.downsR)
+          if mouseover(im.downsR) and spellistmonce == 0:
+            minspell -=5
+            spellistmonce = 1
+        s.ds.blit(text.spells,text.spellsR)
+        s.ds.blit(equipsl,equipslR)
+        s.ds.blit(slo1,slo1R)
+        s.ds.blit(slo2,slo2R)
+        s.ds.blit(slo3,slo3R)
+        s.ds.blit(slo4,slo4R)
+        if not mouseover(im.downsR) and not mouseover(im.upsR):
+            spellistmonce = 0
+        if testmouse:
+          mousetext = text.font2.render(str(spellover+1)+':'+str(sta.spell[In.learnedspells[spellover]]),True,black_faded)
+          testingtesting = p.mouse.get_pressed()[0]
+          s.ds.blit(mousetext,(mx-50,my-10))
+          if not testingtesting:
+            testmouse = False
+            if slo1R.collidepoint((mx,my)):
+              if not In.eqspells[1] == In.learnedspells[spellover]:
+                if not In.eqspells[2] == In.learnedspells[spellover]:
+                  if not In.eqspells[3] == In.learnedspells[spellover]:
+                    In.eqspells[0] = In.learnedspells[spellover]
+            if slo2R.collidepoint((mx,my)):
+              if not In.eqspells[0] == In.learnedspells[spellover]:
+                if not In.eqspells[2] == In.learnedspells[spellover]:
+                  if not In.eqspells[3] == In.learnedspells[spellover]:
+                    In.eqspells[1] = In.learnedspells[spellover]
+            if slo3R.collidepoint((mx,my)):
+              if not In.eqspells[1] == In.learnedspells[spellover]:
+                if not In.eqspells[0] == In.learnedspells[spellover]:
+                  if not In.eqspells[3] == In.learnedspells[spellover]:
+                    In.eqspells[2] = In.learnedspells[spellover]
+            if slo4R.collidepoint((mx,my)):
+              if not In.eqspells[1] == In.learnedspells[spellover]:
+                if not In.eqspells[0] == In.learnedspells[spellover]:
+                  if not In.eqspells[2] == In.learnedspells[spellover]:
+                    In.eqspells[3] = In.learnedspells[spellover]
+              
+          
       
-        In.slotselect()
 #menu screen
     elif sta.S == 2:
         s.ds.fill(white)
@@ -988,20 +1151,152 @@ while r:
     elif sta.S == 5:
         s.ds.fill(white)
         if forscor == 0:
-          player = s.ds.blit(sta.mcmini,(50,50))
+          plen = ((sta.partyamount*70) + 20)
+          text.stat1 = text.font2.render('Atk:'+str(sta.mc.attack),True,black)
+          text.stat2 = text.font2.render('Def:'+str(sta.mc.defense),True,black)
+          text.stat3 = text.font2.render('Mana:'+str(sta.mc.mana),True,black)
+          text.stat4 = text.font2.render('MaxHp:'+str(sta.mc.maxHp),True,black)
+          text.stat5 = text.font2.render('CurrentHp:'+str(sta.mc.Hp),True,black)
+          s.ds.blit(text.stat1,text.stat1R)
+          s.ds.blit(text.stat2,text.stat2R)
+          s.ds.blit(text.stat3,text.stat3R)
+          s.ds.blit(text.stat4,text.stat4R)
+          s.ds.blit(text.stat5,text.stat5R)
+          p.draw.rect(s.ds,black,p.Rect(100,70,plen,5))
+          p.draw.rect(s.ds,black,p.Rect(100,100,plen,5))
+          p.draw.rect(s.ds,black,p.Rect(100,130,plen,5))
+          p.draw.rect(s.ds,black,p.Rect(100,160,plen,5))
+          p.draw.rect(s.ds,black,p.Rect(100,190,plen,5))
+          p.draw.rect(s.ds,black,p.Rect(185,0,5,195))
+          player = s.ds.blit(sta.mcmini,(130,0))
           if mouseover(player):
             forscor = 1
           if sta.partyamount >=2:
-            pm1 = s.ds.blit(sta.pm1mini,(50,100))
+            p.draw.rect(s.ds,black,p.Rect(255,0,5,195))
+            s.ds.blit(text.p1st1,text.p1st1R)
+            s.ds.blit(text.p1st2,text.p1st2R)
+            s.ds.blit(text.p1st3,text.p1st3R)
+            s.ds.blit(text.p1st4,text.p1st4R)
+            s.ds.blit(text.p1st5,text.p1st5R)
+            pm1 = s.ds.blit(sta.pm1mini,(200,0))
             if mouseover(pm1):
               forscor = 2
           if sta.partyamount == 3:
-            pm2 = s.ds.blit(sta.pm2mini,(50,150))
+            p.draw.rect(s.ds,black,p.Rect(325,0,5,195))
+            s.ds.blit(text.p2st1,text.p2st1R)
+            s.ds.blit(text.p2st2,text.p2st2R)
+            s.ds.blit(text.p2st3,text.p2st3R)
+            s.ds.blit(text.p2st4,text.p2st4R)
+            s.ds.blit(text.p2st5,text.p2st5R)
+            pm2 = s.ds.blit(sta.pm2mini,(270,0))
             if mouseover(pm2):
               forscor = 3
-        if forscor == 1:
-          mcmini = p.transform.scale(sta.mc.mini,(75,100))
-          s.ds.blit(mcmini,(0,0))
+        elif forscor == 1:
+          
+          text.spsta = text.font2.render('Strength:'+str(Xp.pStr),True,black)
+          text.spsta1 = text.font2.render('Dexterity:'+str(Xp.pDex),True,black)
+          text.spsta2 = text.font2.render('Constitution:'+str(Xp.pCon),True,black)
+          text.spsta3 = text.font2.render('Intelligence:'+str(Xp.pInt),True,black)
+          text.spstasta = text.font.render('Current stat points:'+str(Xp.pstatpoints),True,black)
+          s.ds.blit(text.spstasta,text.staR)
+          s.ds.blit(text.spsta,text.strR)
+          s.ds.blit(text.spsta1,text.dexR)
+          s.ds.blit(text.spsta2,text.conR)
+          s.ds.blit(text.spsta3,text.intR)
+          s.ds.blit(im.add1,im.add1R)
+          s.ds.blit(im.add2,im.add2R)
+          s.ds.blit(im.add3,im.add3R)
+          s.ds.blit(im.add4,im.add4R)
+          if mouseover(im.add1R) and oncest == 0:
+            Xp.pStr +=1
+            Xp.pstatpoints -=1
+            oncest = 1
+          elif mouseover(im.add2R) and oncest == 0:
+            Xp.pDex +=1
+            Xp.pstatpoints -=1
+            oncest = 1
+          elif mouseover(im.add3R) and oncest == 0:
+            Xp.pCon +=1
+            Xp.pstatpoints -=1
+            oncest = 1
+          elif mouseover(im.add4R) and oncest == 0:
+            Xp.pInt +=1
+            Xp.pstatpoints -=1
+            oncest = 1
+          elif not mouseover(im.add1R) and not mouseover(im.add2R) and not mouseover(im.add3R) and not mouseover(im.add4R):
+            if not Xp.pstatpoints <= 0:
+              oncest = 0
+          
+        elif forscor == 2:
+          text.sp1sta = text.font2.render('Strength:'+str(Xp.p1Str),True,black)
+          text.sp1sta1 = text.font2.render('Dexterity:'+str(Xp.p1Dex),True,black)
+          text.sp1sta2 = text.font2.render('Constitution:'+str(Xp.p1Con),True,black)
+          text.sp1sta3 = text.font2.render('Intelligence:'+str(Xp.p1Int),True,black)
+          text.sp1stasta = text.font.render('Current stat points:'+str(Xp.p1statpoints),True,black)
+          s.ds.blit(text.sp1stasta,text.sta1R)
+          s.ds.blit(text.sp1sta,text.str1R)
+          s.ds.blit(text.sp1sta1,text.dex1R)
+          s.ds.blit(text.sp1sta2,text.con1R)
+          s.ds.blit(text.sp1sta3,text.int1R)
+          s.ds.blit(im.add1,im.add1R)
+          s.ds.blit(im.add2,im.add2R)
+          s.ds.blit(im.add3,im.add3R)
+          s.ds.blit(im.add4,im.add4R)
+          if mouseover(im.add1R) and oncest1 == 0:
+            Xp.p1Str +=1
+            Xp.p1statpoints -=1
+            oncest1 = 1
+          elif mouseover(im.add2R) and oncest1 == 0:
+            Xp.p1Dex +=1
+            Xp.p1statpoints -=1
+            oncest1 = 1
+          elif mouseover(im.add3R) and oncest1 == 0:
+            Xp.p1Con +=1
+            Xp.p1statpoints -=1
+            oncest1 = 1
+          elif mouseover(im.add4R) and oncest1 == 0:
+            Xp.p1Int +=1
+            Xp.p1statpoints -=1
+            oncest1 = 1
+          elif not mouseover(im.add1R) and not mouseover(im.add2R) and not mouseover(im.add3R) and not mouseover(im.add4R):
+            if not Xp.p1statpoints <= 0:
+              oncest1 = 0
+        elif forscor == 3:
+          text.sp2sta = text.font2.render('Strength:'+str(Xp.p2Str),True,black)
+          text.sp2sta1 = text.font2.render('Dexterity:'+str(Xp.p2Dex),True,black)
+          text.sp2sta2 = text.font2.render('Constitution:'+str(Xp.p2Con),True,black)
+          text.sp2sta3 = text.font2.render('Intelligence:'+str(Xp.p2Int),True,black)
+          text.sp2stasta = text.font.render('Current stat points:'+str(Xp.p2statpoints),True,black)
+          s.ds.blit(text.sp2stasta,text.sta2R)
+          s.ds.blit(text.sp2sta,text.str2R)
+          s.ds.blit(text.sp2sta1,text.dex2R)
+          s.ds.blit(text.sp2sta2,text.con2R)
+          s.ds.blit(text.sp2sta3,text.int2R)
+          s.ds.blit(im.add1,im.add1R)
+          s.ds.blit(im.add2,im.add2R)
+          s.ds.blit(im.add3,im.add3R)
+          s.ds.blit(im.add4,im.add4R)
+          if mouseover(im.add1R) and oncest2 == 0:
+            Xp.p2Str +=1
+            Xp.p2statpoints -=1
+            oncest2 = 1
+          elif mouseover(im.add2R) and oncest2 == 0:
+            Xp.p2Dex +=1
+            Xp.p2statpoints -=1
+            oncest2 = 1
+          elif mouseover(im.add3R) and oncest2 == 0:
+            Xp.p2Con +=1
+            Xp.p2statpoints -=1
+            oncest2 = 1
+          elif mouseover(im.add4R) and oncest2 == 0:
+            Xp.p2Int +=1
+            Xp.p2statpoints -=1
+            oncest2 = 1
+          elif not mouseover(im.add1R) and not mouseover(im.add2R) and not mouseover(im.add3R) and not mouseover(im.add4R):
+            if not Xp.p2statpoints <= 0:
+              oncest2 = 0
+
+      
     elif sta.S == 21:
       battle.battlesequence()
     elif sta.S == None:

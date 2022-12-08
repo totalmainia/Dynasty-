@@ -16,6 +16,7 @@ class Player(object):
         self.Hp = 10
         self.maxHp = 10
         self.mana = 0
+        self.currentmana = 0
         self.luck = 0
         self.level=1
         self.clas = None
@@ -35,10 +36,11 @@ class Pm1(object):
         self.attack = 1
         self.Hp = 10
         self.maxHp = 10
-        self.mana = 0
+        self.mana = 1
+        self.currentmana = 1
         self.luck = 0
         self.level=1
-        self.clas = None
+        self.clas = 1
         self.mini = (im.Di)
 class Pm2(object):
     def __init__(self):
@@ -54,10 +56,11 @@ class Pm2(object):
         self.attack = 1
         self.Hp = 10
         self.maxHp = 10
-        self.mana = 0
+        self.mana = 1
+        self.currentmana = 1
         self.luck = 0
         self.level=1
-        self.clas = None
+        self.clas = 2
         self.mini = (im.Di)
 class damagecheck(object):
     def __init__(self):
@@ -99,9 +102,9 @@ pm1 = Pm1()
 pm2 = Pm2()
 dmc=damagecheck()
 Enemystats={
-  im.temp:[0,1,5,5,0],
-  im.turtle:[2,1,25,25,0],
-  im.rat:[0,99,1,1,0]
+  im.temp:[3,3,20,20,0],
+  im.turtle:[4,2,50,50,0],
+  im.rat:[2,10,15,15,0]
 }
 itemstats={
   0:[0,0,0,0,0,0,0],
@@ -112,10 +115,38 @@ itemstats={
   #Isword
   3:[0,2,0,0,0,1,1],
 }
-#[defense,attack,maxhp,mana,luck]
+#[requiredmana,typeofspell,directhit or attack,spash(if exists) or defense, health]
+spell = {
+  None : 'None',
+  1: 'Fireball',
+  2: 'Thunder Shock',
+  3: 'Heal Mist',
+  4: 'Summon Clam',
+  5: 'Arcane Defense',
+}
+
+spellstats = {
+  'Fireball':[10,1,10,5], #fireball
+  'Thunder Shock':[10,2,35], #thunder shock
+  'Heal Mist':[20,3,10,10], # heal mist
+  'Summon Clam':[10,4,1,10,5], # summon clam
+  'Arcane Defense':[25,5,0,5], # arcane defense
+}
+swordskills = {
+  im.Stick:[1,None,None],
+  im.Wsword:[2,None,None],
+  im.Isword:[2,3,None],
+}
+#[energyused,damage%,spash,peirce,effect,chanceofeffect,multiattack,chance per attack]
+skillstats = {
+  1:[10,110,1,0,None,0,2,50],#bowstaff
+  2:[20,60,1,2,None,0,2,100],#Dual slash
+  3:[25,30,3,0,None,0,3,33],#tornado slashes
+}
 mcmini=p.transform.scale(mc.mini,(45,45))
 pm1mini = p.transform.scale(pm1.mini,(45,45))
 pm2mini = p.transform.scale(pm2.mini,(45,45))
+#[defense,attack,maxhp,mana,luck]
 mcstats=[1,1,10,0,0]
 pm1stats=[1,1,10,0,0]
 pm2stats=[1,1,10,0,0]
