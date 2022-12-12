@@ -33,3 +33,6 @@ Gun:
 
 Blizzard:
   Minor damage, Stat decreases overall for all enemies
+
+Sunbeam:
+  Direct damage, may set target on fire

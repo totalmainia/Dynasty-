@@ -115,7 +115,7 @@ itemstats={
   #Isword
   3:[0,2,0,0,0,1,1],
 }
-#[requiredmana,typeofspell,directhit or attack,spash(if exists) or defense, health]
+#[requiredmana,typeofspell,directhit or attack,spash or defense,%forsplash or health ,effect,chance of effect]
 spell = {
   None : 'None',
   1: 'Fireball',
@@ -126,16 +126,16 @@ spell = {
 }
 
 spellstats = {
-  'Fireball':[10,1,10,5], #fireball
-  'Thunder Shock':[10,2,35], #thunder shock
-  'Heal Mist':[20,3,10,10], # heal mist
-  'Summon Clam':[10,4,1,10,5], # summon clam
-  'Arcane Defense':[25,5,0,5], # arcane defense
+  'Fireball':[10,1,10,3,50,None,0], #fireball
+  'Thunder Shock':[10,1,35,1,0,None,0], #thunder shock
+  'Heal Mist':[20,2,10,3,100,None,0], # heal mist
+  'Summon Clam':[10,3,1,10,5,None,0], # summon clam
+  'Arcane Defense':[25,4,0,5,0,None,0], # arcane defense
 }
 swordskills = {
-  im.Stick:[1,None,None],
-  im.Wsword:[2,None,None],
-  im.Isword:[2,3,None],
+  im.Stick:[1,None,None,None],
+  im.Wsword:[2,None,None,None],
+  im.Isword:[2,3,None,None],
 }
 #[energyused,damage%,spash,peirce,effect,chanceofeffect,multiattack,chance per attack]
 skillstats = {

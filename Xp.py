@@ -68,7 +68,10 @@ def levelcalc():
         sta.mcstats[2]=health
         sta.mc.maxHp=health
       if not pmm == 0:
-        sta.mcstats[3] += (random.randrange(1,pmm+1)) + int(((pInt-10)/2))
+        if sta.mc.clas == 1:
+          sta.mcstats[3] += (random.randrange(1,pmm+1)) + int(((pStr-10)/2))
+        else:
+          sta.mcstats[3] += (random.randrange(1,pmm+1)) + int(((pInt-10)/2))
   if pm1gxp >= pm1xpn:
       sta.pm1.level +=1
       p1levelgap-=1
@@ -125,11 +128,11 @@ def levelcalc():
 def gainedxp(enemy):
   global xpgained
   max= sta.Enemystats[enemy][0]+ sta.Enemystats[enemy][1]+ sta.Enemystats[enemy][2]
-  if max<6:
-    min =1
-  elif 6<=max<=30:
-    min = max-5
-  else:
+  if max<20:
+    min =5
+  elif 20<=max<=100:
     min = max-15
+  else:
+    min = max-10
   print(min,max)
   xpgained=random.randrange(min,max)

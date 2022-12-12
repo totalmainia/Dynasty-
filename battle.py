@@ -165,10 +165,12 @@ pm2 = p.transform.scale(im.party2, (pm2w, pm2h))
 pm1 = p.transform.scale(im.party1, (pm1w, pm1h))
 battleonce = 0
 magictest = False
+spellused = None
+magicattack = False
 
 
 def battledraw():
-    global textHp, pbx, pby, pbh, selecx, selecy, pbw, attacktest, de, enemyattacking, enemy1health, enemy2health, enemy3health, enemy1maxhealth, enemy2maxhealth, enemy3maxhealth, updown, minselecy, maxselecy, selector, currentturn, oncet1, oncet2, oncet3, oncet4, oncet5, oncet6, pmattacking, playerminix, pm1minix, pm2minix, playermini, pm1mini, pm2mini, selectorover, onceanim, pm1, pm2, leftright, eselecx, eselecy, emaxselecx, eminselecx, selectenem, battleselec, battleonce, magictest
+    global textHp, pbx, pby, pbh, selecx, selecy, pbw, attacktest, de, enemyattacking, enemy1health, enemy2health, enemy3health, enemy1maxhealth, enemy2maxhealth, enemy3maxhealth, updown, minselecy, maxselecy, selector, currentturn, oncet1, oncet2, oncet3, oncet4, oncet5, oncet6, pmattacking, playerminix, pm1minix, pm2minix, playermini, pm1mini, pm2mini, selectorover, onceanim, pm1, pm2, leftright, eselecx, eselecy, emaxselecx, eminselecx, selectenem, battleselec, battleonce, magictest,magicattack,spellused
     text.playerlv = text.fontahhh.render('Lv:' + str(sta.mc.level), True,
                                          black)
     text.pm1lv = text.fontahhh.render('Lv:' + str(sta.pm1.level), True, black)
@@ -376,53 +378,121 @@ def battledraw():
                     p2attack()
                 de = 0
     elif magictest:
-        if selectorover == 1:
-          playermana = (sta.mc.currentmana / sta.mc.mana)*100
-          if sta.mc.clas >=2:
-            playerbar = text.fonthp.render('Mana:'+str(sta.mc.currentmana)+'/'+str(sta.mc.mana),True,black)
-            manabar = p.draw.rect(s.ds, (60,0,100), p.Rect(0, 210, 100, 15)), p.draw.rect(s.ds, (235,205,255), p.Rect(0, 210, playermana, 15))
-            s.ds.blit(playerbar,(5,213))
-          else:
-            playerbar = text.fonthp.render('Energy:'+str(sta.mc.currentmana)+'/'+str(sta.mc.mana),True,black)
-            manabar = p.draw.rect(s.ds, (0,0,139), p.Rect(0, 210, 100, 15)),p.draw.rect(s.ds, (173,216,230), p.Rect(0, 210, playermana, 15))
-            s.ds.blit(playerbar,(5,213))
-        if selectorover == 2:
-          pm1mana = (sta.pm1.currentmana / sta.pm1.mana)*100
-          if sta.pm1.clas >=2:
-            pm1bar = text.fonthp.render('Mana:'+str(sta.pm1.currentmana)+'/'+str(sta.pm1.mana),True,black)
-            manabar = p.draw.rect(s.ds, (60,0,100), p.Rect(0, 210, 100, 15)), p.draw.rect(s.ds, (235,205,255), p.Rect(0, 210, pm1mana, 15))
-            s.ds.blit(pm1bar,(5,213))
-          else:
-            pm1bar = text.fonthp.render('Energy:'+str(sta.pm1.currentmana)+'/'+str(sta.pm1.mana),True,black)
-            manabar = p.draw.rect(s.ds, (0,0,139), p.Rect(0, 210, 100, 15)),p.draw.rect(s.ds, (173,216,230), p.Rect(0, 210, pm1mana, 15))
-            s.ds.blit(pm1bar,(5,213))
-        if selectorover == 3:
-          pm2mana = (sta.pm2.currentmana / sta.pm2.mana)*100
-          if sta.pm2.clas >=2:
-            pm2bar = text.fonthp.render('Mana:'+str(sta.pm2.currentmana)+'/'+str(sta.pm2.mana),True,black)
-            manabar = p.draw.rect(s.ds, (60,0,100), p.Rect(0, 210, 100, 15)), p.draw.rect(s.ds, (235,205,255), p.Rect(0, 210, pm2mana, 15))
-            s.ds.blit(pm2bar,(5,213))
-          else:
-            pm2bar = text.fonthp.render('Energy:'+str(sta.pm2.currentmana)+'/'+str(sta.pm2.mana),True,black)
-            manabar = p.draw.rect(s.ds, (0,0,139), p.Rect(0, 210, 100, 15)),p.draw.rect(s.ds, (173,216,230), p.Rect(0, 210, pm2mana, 15))
-            s.ds.blit(pm2bar,(5,213))
-          
-        slo1 = text.font2.render(str(sta.spell[In.eqspells[0]]),True,black)
-        slo1R = slo1.get_rect()
-        slo1R.topleft = (10, 230)
-        slo2 = text.font2.render(str(sta.spell[In.eqspells[1]]),True,black)
-        slo2R = slo2.get_rect()
-        slo2R.topleft = (10, 255)
-        slo3 = text.font2.render(str(sta.spell[In.eqspells[2]]),True,black)
-        slo3R = slo3.get_rect()
-        slo3R.topleft = (250, 230)
-        slo4 = text.font2.render(str(sta.spell[In.eqspells[3]]),True,black)
-        slo4R = slo4.get_rect()
-        slo4R.topleft = (250, 255)
-        s.ds.blit(slo1, slo1R)
-        s.ds.blit(slo2, slo2R)
-        s.ds.blit(slo3, slo3R)
-        s.ds.blit(slo4, slo4R)
+        if not magicattack:
+          if selectorover == 1:
+            playermana = (sta.mc.currentmana / sta.mc.mana)*100
+            if sta.mc.clas >=2:
+              playerbar = text.fonthp.render('Mana:'+str(sta.mc.currentmana)+'/'+str(sta.mc.mana),True,black)
+              manabar = p.draw.rect(s.ds, (60,0,100), p.Rect(0, 210, 100, 15)), p.draw.rect(s.ds, (235,205,255), p.Rect(0, 210, playermana, 15))
+              s.ds.blit(playerbar,(5,213))
+            else:
+              playerbar = text.fonthp.render('Energy:'+str(sta.mc.currentmana)+'/'+str(sta.mc.mana),True,black)
+              manabar = p.draw.rect(s.ds, (0,0,139), p.Rect(0, 210, 100, 15)),p.draw.rect(s.ds, (173,216,230), p.Rect(0, 210, playermana, 15))
+              s.ds.blit(playerbar,(5,213))
+          if selectorover == 2:
+            pm1mana = (sta.pm1.currentmana / sta.pm1.mana)*100
+            if sta.pm1.clas >=2:
+              pm1bar = text.fonthp.render('Mana:'+str(sta.pm1.currentmana)+'/'+str(sta.pm1.mana),True,black)
+              manabar = p.draw.rect(s.ds, (60,0,100), p.Rect(0, 210, 100, 15)), p.draw.rect(s.ds, (235,205,255), p.Rect(0, 210, pm1mana, 15))
+              s.ds.blit(pm1bar,(5,213))
+            else:
+              pm1bar = text.fonthp.render('Energy:'+str(sta.pm1.currentmana)+'/'+str(sta.pm1.mana),True,black)
+              manabar = p.draw.rect(s.ds, (0,0,139), p.Rect(0, 210, 100, 15)),p.draw.rect(s.ds, (173,216,230), p.Rect(0, 210, pm1mana, 15))
+              s.ds.blit(pm1bar,(5,213))
+          if selectorover == 3:
+            pm2mana = (sta.pm2.currentmana / sta.pm2.mana)*100
+            if sta.pm2.clas >=2:
+              pm2bar = text.fonthp.render('Mana:'+str(sta.pm2.currentmana)+'/'+str(sta.pm2.mana),True,black)
+              manabar = p.draw.rect(s.ds, (60,0,100), p.Rect(0, 210, 100, 15)), p.draw.rect(s.ds, (235,205,255), p.Rect(0, 210, pm2mana, 15))
+              s.ds.blit(pm2bar,(5,213))
+            else:
+              pm2bar = text.fonthp.render('Energy:'+str(sta.pm2.currentmana)+'/'+str(sta.pm2.mana),True,black)
+              manabar = p.draw.rect(s.ds, (0,0,139), p.Rect(0, 210, 100, 15)),p.draw.rect(s.ds, (173,216,230), p.Rect(0, 210, pm2mana, 15))
+              s.ds.blit(pm2bar,(5,213))
+            
+          slo1 = text.font2.render(str(sta.spell[In.eqspells[0]]),True,black)
+          slo1R = slo1.get_rect()
+          slo1R.topleft = (10, 230)
+          slo2 = text.font2.render(str(sta.spell[In.eqspells[1]]),True,black)
+          slo2R = slo2.get_rect()
+          slo2R.topleft = (10, 255)
+          slo3 = text.font2.render(str(sta.spell[In.eqspells[2]]),True,black)
+          slo3R = slo3.get_rect()
+          slo3R.topleft = (250, 230)
+          slo4 = text.font2.render(str(sta.spell[In.eqspells[3]]),True,black)
+          slo4R = slo4.get_rect()
+          slo4R.topleft = (250, 255)
+          s.ds.blit(slo1, slo1R)
+          s.ds.blit(slo2, slo2R)
+          s.ds.blit(slo3, slo3R)
+          s.ds.blit(slo4, slo4R)
+          if selectorover ==1:
+            if mouseover(slo1R) and In.eqspells[0] >= 0 and sta.mc.currentmana >= sta.spellstats[sta.spell[In.eqspells[0]]][0]:
+              magicattack = True
+              spellused = In.eqspells[0]
+            if mouseover(slo2R) and In.eqspells[1] >= 0 and sta.mc.currentmana >= sta.spellstats[sta.spell[In.eqspells[1]]][0]:
+              magicattack = True
+              spellused = In.eqspells[1]
+            if mouseover(slo3R) and In.eqspells[2] >= 0 and sta.mc.currentmana >= sta.spellstats[sta.spell[In.eqspells[2]]][0]:
+              magicattack = True
+              spellused = In.eqspells[2]
+            if mouseover(slo4R) and In.eqspells[3] >= 0 and sta.mc.currentmana >= sta.spellstats[sta.spell[In.eqspells[3]]][0]:
+              magicattack = True
+              spellused = In.eqspells[3]
+          elif selectorover ==2:
+            if mouseover(slo1R) and In.eqspells[0] >= 0 and sta.pm1.currentmana >= sta.spellstats[sta.spell[In.eqspells[0]]][0]:
+              magicattack = True
+              spellused = In.eqspells[0]
+            if mouseover(slo2R) and In.eqspells[1] >= 0 and sta.pm1.currentmana >= sta.spellstats[sta.spell[In.eqspells[1]]][0]:
+              magicattack = True
+              spellused = In.eqspells[1]
+            if mouseover(slo3R) and In.eqspells[2] >= 0 and sta.pm1.currentmana >= sta.spellstats[sta.spell[In.eqspells[2]]][0]:
+              magicattack = True
+              spellused = In.eqspells[2]
+            if mouseover(slo4R) and In.eqspells[3] >= 0 and sta.pm1.currentmana >= sta.spellstats[sta.spell[In.eqspells[3]]][0]:
+              magicattack = True
+              spellused = In.eqspells[3]
+          elif selectorover ==3:
+            if mouseover(slo1R) and In.eqspells[0] >= 0 and sta.pm2.currentmana >= sta.spellstats[sta.spell[In.eqspells[0]]][0]:
+              magicattack = True
+              spellused = In.eqspells[0]
+            if mouseover(slo2R) and In.eqspells[1] >= 0 and sta.pm2.currentmana >= sta.spellstats[sta.spell[In.eqspells[1]]][0]:
+              magicattack = True
+              spellused = In.eqspells[1]
+            if mouseover(slo3R) and In.eqspells[2] >= 0 and sta.pm2.currentmana >= sta.spellstats[sta.spell[In.eqspells[2]]][0]:
+              magicattack = True
+              spellused = In.eqspells[2]
+            if mouseover(slo4R) and In.eqspells[3] >= 0 and sta.pm2.currentmana >= sta.spellstats[sta.spell[In.eqspells[3]]][0]:
+              magicattack = True
+              spellused = In.eqspells[3]
+        if magicattack:
+          if not enemieshp[0] <= 0:
+            enem1_ = p.transform.scale(sta.enem.image, (15, 15))
+            enem1_5 = s.ds.blit(enem1_, (30, 230))
+            enemy1hpbarred = p.draw.rect(s.ds, red, p.Rect(70, 230, 100, 15))
+            p.draw.rect(s.ds, green, p.Rect(70, 230, enem1hp, 15))
+            if mouseover(enemy1hpbarred) or mouseover(enem1_5):
+              enemyattacking = 1
+              if sta.spellstats[sta.spell[spellused]][1] == 1:
+                attackspell(spellused)
+          if not enemieshp[1] <= 0 and sta.enemammount >= 2:
+            enem2_ = p.transform.scale(sta.enem.image2, (15, 15))
+            enem2_5 = s.ds.blit(enem2_, (30, 250))
+            enemy2hpbarred = p.draw.rect(s.ds, red, p.Rect(70, 250, 100, 15))
+            p.draw.rect(s.ds, green, p.Rect(70, 250, enem2hp, 15))
+            if mouseover(enemy2hpbarred) or mouseover(enem2_5):
+              enemyattacking = 2
+              if sta.spellstats[sta.spell[spellused]][1] == 1:
+                attackspell(spellused)
+          if not enemieshp[2] <= 0 and sta.enemammount == 3:
+            enem3_ = p.transform.scale(sta.enem.image3, (15, 15))
+            enem3_5 = s.ds.blit(enem3_, (30, 270))
+            enemy3hpbarred = p.draw.rect(s.ds, red, p.Rect(70, 270, 100, 15))
+            p.draw.rect(s.ds, green, p.Rect(70, 270, enem3hp, 15))
+            if mouseover(enemy3hpbarred) or mouseover(enem3_5):
+              enemyattacking = 3
+              if sta.spellstats[sta.spell[spellused]][1] == 1:
+                attackspell(spellused)
     if battleselec == 1 and battleonce == 0:
         text.colora = (100, 100, 100)
         text.colord = (255, 255, 255)
@@ -913,5 +983,77 @@ def enemyattack3():
         battledraw()
     if sta.mc.Hp <= 0:
         sta.S = None
-def splashspell(spell):
-    pass
+
+      
+def attackspell(spell):
+    global enemyattacking,enemieshp,magictest,magicattack,enemy1health,enemy2health,enemy3health,selectorover,currentturn
+    spe = sta.spellstats[sta.spell[spell]]
+    if selectorover ==1:
+      if sta.mc.currentmana >= spe[0]:
+        sta.mc.currentmana -= spe[0]
+        sta.mc.hasattacked = True
+    elif selectorover == 2:
+      if sta.pm1.currentmana >= spe[0]:
+        sta.pm1.currentmana -= spe[0]
+        sta.pm1.hasattacked = True
+    elif selectorover == 3:
+      if sta.pm2.currentmana >= spe[0]:
+        sta.pm2.currentmana -= spe[0]
+        sta.pm2.hasattacked = True
+    enemieshp[(enemyattacking-1)] -= random.randrange((spe[2]-5),spe[2])
+    if spe[3] == 2:
+      if enemyattacking == 1:
+        other = random.randrange(1,3)
+      else:
+        other = 0
+      enemieshp[other] -= (random.randrange((spe[2]-5),spe[2])/100)*spe[4]
+      print(enemieshp[0])
+    elif spe[3] ==3:
+      if enemyattacking == 1:
+        enemieshp[1] -= (random.randrange((spe[2]-5),spe[2])/100)*spe[4]
+        enemieshp[2] -=(random.randrange((spe[2]-5),spe[2])/100)*spe[4]
+      elif enemyattacking == 2:
+        enemieshp[0] -= (random.randrange((spe[2]-5),spe[2])/100)*spe[4]
+        enemieshp[2] -=(random.randrange((spe[2]-5),spe[2])/100)*spe[4]
+      elif enemyattacking == 3:
+        enemieshp[0] -= (random.randrange((spe[2]-5),spe[2])/100)*spe[4]
+        enemieshp[1] -=(random.randrange((spe[2]-5),spe[2])/100)*spe[4]
+    magictest = False
+    magicattack = False
+    currentturn +=1
+    enemy1health = enemieshp[0]
+    enemy2health = enemieshp[1]
+    enemy3health = enemieshp[2]
+    battledraw()
+def healingspell(spell):
+  global selectorover
+  spe = sta.spellstats[sta.spell[spell]]
+  if selectorover ==1:
+      if sta.mc.currentmana >= spe[0]:
+        sta.mc.currentmana -= spe[0]
+        sta.mc.hasattacked = True
+  elif selectorover == 2:
+      if sta.pm1.currentmana >= spe[0]:
+        sta.pm1.currentmana -= spe[0]
+        sta.pm1.hasattacked = True
+  elif selectorover == 3:
+      if sta.pm2.currentmana >= spe[0]:
+        sta.pm2.currentmana -= spe[0]
+        sta.pm2.hasattacked = True
+  if spe[3] == 3:
+    sta.mc.Hp += spe[2]
+    sta.pm1.Hp += spe[2]
+    sta.pm2.Hp += spe[2]
+  elif spe[3] == 2:
+    if selectorover == 1:
+      sta.pm1.Hp += spe[2]
+      sta.pm2.Hp += spe[2]
+    elif selectorover == 2:
+      sta.mc.Hp += spe[2]
+      sta.pm2.Hp += spe[2]
+    elif selectorover == 3:
+      sta.mc.Hp += spe[2]
+      sta.pm1.Hp += spe[2]
+  elif spe[3] == 1:
+    if selectorover == 1:
+      
